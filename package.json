@@ -4,7 +4,9 @@
   "description": "Bookshelf is a basic CRUD Application that uses books as models in order to learn Golang.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tailwindcss build -o ui/static/css/tailwind.css",
+    "watch": "tailwindcss build -o ui/static/css/tailwind.css --watch"
   },
   "keywords": [],
   "author": "Jan Steikowski <j.steikowski@aol.com>",
