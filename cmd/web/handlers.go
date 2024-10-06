@@ -8,14 +8,19 @@ import (
 
 
 func (app *application) getDashboard(w http.ResponseWriter, r *http.Request) {
-  tmpl, err := template.ParseFiles("./ui/html/pages/dashboard.tmpl.html")
+
+  files := []string{
+    "./ui/html/base.tmpl.html",
+    "./ui/html/pages/dashboard.tmpl.html",
+  }
+  tmpl, err := template.ParseFiles(files...)
   if err != nil {
     fmt.Println(err)
     http.Error(w, "Internal Server Error", http.StatusInternalServerError)
     return
   }
 
-  err = tmpl.Execute(w, nil)
+  err = tmpl.ExecuteTemplate(w, "base", nil)
   if err != nil {
     fmt.Println(err)
     http.Error(w, "Internal Server Error", http.StatusInternalServerError)
