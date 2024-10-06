@@ -1,0 +1,15 @@
+{
+  "name": "bookshelf",
+  "version": "1.0.0",
+  "description": "Bookshelf is a basic CRUD Application that uses books as models in order to learn Golang.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Jan Steikowski <j.steikowski@aol.com>",
+  "license": "MIT",
+  "dependencies": {
+    "tailwind": "^4.0.0"
+  }
+}
