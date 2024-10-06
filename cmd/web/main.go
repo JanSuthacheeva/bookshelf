@@ -7,16 +7,17 @@ import (
   "fmt"
   "os"
 
+  "github.com/jansuthacheeva/bookshelf/internal/models"
   _ "github.com/go-sql-driver/mysql"
 )
+
+type application struct {
+  books     *models.BookModel
+}
 
 func main () {
   addr := flag.String("addr", ":4444", "HTTP network address.")
   dsn := flag.String("dsn", "web:pass@/bookshelf?parseTime=true", "MySQL data source name.")
-  server := &http.Server{
-    Addr: *addr,
-    Handler: routes(),
-  }
 
   db, err := openDB(*dsn)
   if err != nil {
@@ -27,8 +28,12 @@ func main () {
   // finished.
   defer db.Close()
 
+  app := &application{
+    books: &models.BookModel{DB : db},
+  }
+
   fmt.Printf("Starting server at localhost%s\n", *addr)
-  err = server.ListenAndServe()
+  err = http.ListenAndServe(*addr, app.routes())
   if err != nil {
     fmt.Println(err)
     os.Exit(1)

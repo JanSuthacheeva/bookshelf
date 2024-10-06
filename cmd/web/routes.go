@@ -4,7 +4,7 @@ import (
   "net/http"
 )
 
-func routes() http.Handler {
+func (app *application) routes() http.Handler {
   mux := http.NewServeMux()
 
   mux.HandleFunc("/", func (w http.ResponseWriter, r *http.Request) {
