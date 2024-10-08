@@ -4,7 +4,11 @@ module.exports = {
     "./ui/html/**/*.html",
   ],
   theme: {
-    extend: {},
+    extend: {
+      maxWidth: {
+        '3xl': '1800px'
+      }
+    },
   },
   plugins: [],
 }
