@@ -7,11 +7,12 @@
     <link rel="stylesheet" href="../static/css/tailwind.css"/>
     <link rel="stylesheet" href="../static/css/styles.css"/>
   </head>
-  <body class="h-screen w-screen flex flex-col justify-centeter items-center">
-    <main class="flex-grow justify-between flex items-center">
+  <body class="flex justify-between flex-col items-center h-screen w-screen bg-orange-linear m-0 pt-8 px-10">
+    <main class="flex-grow bg-white w-full rounded-2xl p-4">
       {{template "main"}}
     </main>
-    <footer class="mx-auto">Powered by <a href="https://golang.org">Golang</a></footer>
+    <div>
   </body>
+  <footer class="mx-auto">Powered by <a href="https://golang.org">Golang</a></footer>
 </html>
 {{end}}
