@@ -595,6 +595,10 @@ video {
   width: 10rem;
 }
 
+.w-\[4\.25rem\] {
+  width: 4.25rem;
+}
+
 .w-full {
   width: 100%;
 }
@@ -692,4 +696,8 @@ video {
 .text-orange-500 {
   --tw-text-opacity: 1;
   color: rgb(249 115 22 / var(--tw-text-opacity));
+}
+
+.hover\:font-bold:hover {
+  font-weight: 700;
 }
