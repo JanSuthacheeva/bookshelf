@@ -1,22 +1,17 @@
-{{define "base"}}
+{{define "base_guest"}}
 <!doctype html>
-<html lang="en">
+<html>
   <head>
     <meta charset="utf-8">
     <title>{{template "title" .}} - Bookshelf</title>
     <link rel="stylesheet" href="../static/css/tailwind.css"/>
     <link rel="stylesheet" href="../static/css/styles.css"/>
   </head>
-  <body class="flex justify-between items-center h-screen w-screen bg-orange-linear m-0 pt-8 px-10">
-    <div class="app flex flex-grow flex-col rounded-t-2xl h-full w-max-3xl bg-white">
-    <header>
-      <h1 class="py-2 mb-8 text-xl font-bold"><a href="/">Bookshelf</a></h1>
-    </header>
-    <main class="flex-grow">
+  <body class="h-screen w-screen flex flex-col justify-centeter items-center">
+    <main class="flex-grow justify-between flex items-center">
       {{template "main"}}
     </main>
     <footer class="mx-auto">Powered by <a href="https://golang.org">Golang</a></footer>
-    </div>
   </body>
 </html>
 {{end}}

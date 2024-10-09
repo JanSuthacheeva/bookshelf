@@ -6,12 +6,10 @@ import (
   "html/template"
 )
 
-
-func (app *application) getDashboard(w http.ResponseWriter, r *http.Request) {
-
+func (app *application) getHome(w http.ResponseWriter, r *http.Request) {
   files := []string{
-    "./ui/html/base.tmpl.html",
-    "./ui/html/pages/dashboard.tmpl.html",
+    "./ui/html/guest_base.tmpl.html",
+    "./ui/html/pages/home.tmpl.html",
   }
   tmpl, err := template.ParseFiles(files...)
   if err != nil {
@@ -20,11 +18,15 @@ func (app *application) getDashboard(w http.ResponseWriter, r *http.Request) {
     return
   }
 
-  err = tmpl.ExecuteTemplate(w, "base", nil)
+  err = tmpl.ExecuteTemplate(w, "base_guest", nil)
   if err != nil {
     fmt.Println(err)
     http.Error(w, "Internal Server Error", http.StatusInternalServerError)
   }
+}
+
+func (app *application) getDashboard(w http.ResponseWriter, r *http.Request) {
+  w.Write([]byte("Dashboard."))
 }
 
 func (app *application) getBooks(w http.ResponseWriter, r *http.Request) {

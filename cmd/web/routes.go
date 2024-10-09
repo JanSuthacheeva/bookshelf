@@ -11,7 +11,7 @@ func (app *application) routes() http.Handler {
 
   mux.Handle("GET /static/", http.FileServerFS(ui.Files))
 
-  mux.HandleFunc("/", app.getDashboard)
+  mux.HandleFunc("/", app.getHome)
 
   mux.HandleFunc("GET /books", app.getBooks)
   mux.HandleFunc("POST /books", app.postBooksCreate)
