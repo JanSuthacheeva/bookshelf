@@ -1,5 +1,34 @@
 {{define "title"}}Register{{end}}
 
 {{define "main"}}
-
+<div class="flex flex-col justify-center items-center w-full h-full">
+  <section class="w-96 flex flex-col rounded-lg p-14">
+    <header class="flex flex-col items-center mb-8">
+      <h1 class="font-bold mx-auto text-2xl mb-4"><a href="/">The Book <span class="text-orange-500">Haven</span></a></h1>
+      <p class="text-lg mb-2">Registration</p>
+      <p class="text-gray-500 text-xs">Fill in your details to use this application</p>
+    </header>
+    <form>
+      <div class="mb-4 flex flex-col gap-0.5">
+        <label for="name" class="text-xs text-gray-500 uppercase">Name</label>
+        <input type="text" class="py-0.5 px-2 rounded-md border border-grey-300 outline-orange-500" name="name" id="name">
+      </div>
+      <div class="mb-4 flex flex-col gap-0.5">
+        <label for="email" class="text-xs text-gray-500 uppercase">Email</label>
+        <input type="email" class="py-0.5 px-2 rounded-md border border-grey-300 outline-orange-500" name="email" id="email">
+      </div>
+      <div class="mb-4 flex flex-col gap-0.5">
+        <label for="password" class="text-xs text-gray-500 uppercase">Password</label>
+        <input type="password" class="py-0.5 px-2 rounded-md border border-grey-300 outline-orange-500" name="password" id="password">
+      </div>
+      <div class="mb-6 flex flex-col gap-0.5">
+        <label for="password_confirm" class="text-xs text-gray-500 uppercase">Confirm Password</label>
+        <input type="password" class="py-0.5 px-2 rounded-md border border-grey-300 outline-orange-500" name="password_confirm" id="password_confirm">
+      </div>
+      <div class="mb-4 flex flex-col gap-1">
+        <button type="submit" class="bg-orange-500 hover:bg-orange-linear py-1 text-center text-white text-sm rounded-md">Register</button>
+      </div>
+      <p class="text-xs text-gray-500">Already a User? <a href="/login" class="underline">Login now</a>.</p>
+  </section>
+</div>
 {{end}}
