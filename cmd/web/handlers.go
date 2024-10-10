@@ -1,27 +1,46 @@
 package main
 
 import (
-  "fmt"
   "net/http"
-  "html/template"
 )
+
+
+func (app *application) getLogin(w http.ResponseWriter, r *http.Request) {
+  files := []string{
+    "./ui/html/guest_base.tmpl.html",
+    "./ui/html/pages/login.tmpl.html",
+  }
+
+  err := parseTemplates(w, "base_guest", &files)
+  if err != nil {
+    http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+    return
+  }
+}
+
+func (app *application) getRegister(w http.ResponseWriter, r *http.Request) {
+  files := []string{
+    "./ui/html/guest_base.tmpl.html",
+    "./ui/html/pages/register.tmpl.html",
+  }
+
+  err := parseTemplates(w, "base_guest", &files)
+  if err != nil {
+    http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+    return
+  }
+}
 
 func (app *application) getHome(w http.ResponseWriter, r *http.Request) {
   files := []string{
     "./ui/html/guest_base.tmpl.html",
     "./ui/html/pages/home.tmpl.html",
   }
-  tmpl, err := template.ParseFiles(files...)
+
+  err := parseTemplates(w, "base_guest", &files)
   if err != nil {
-    fmt.Println(err)
     http.Error(w, "Internal Server Error", http.StatusInternalServerError)
     return
-  }
-
-  err = tmpl.ExecuteTemplate(w, "base_guest", nil)
-  if err != nil {
-    fmt.Println(err)
-    http.Error(w, "Internal Server Error", http.StatusInternalServerError)
   }
 }
 
