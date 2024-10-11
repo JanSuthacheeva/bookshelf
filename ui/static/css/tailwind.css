@@ -546,8 +546,20 @@ video {
   bottom: -3.8rem;
 }
 
+.bottom-\[0\.4rem\] {
+  bottom: 0.4rem;
+}
+
 .right-\[-2\.5rem\] {
   right: -2.5rem;
+}
+
+.right-\[0\.5rem\] {
+  right: 0.5rem;
+}
+
+.z-10 {
+  z-index: 10;
 }
 
 .col-span-1 {
@@ -595,6 +607,10 @@ video {
   display: grid;
 }
 
+.h-4 {
+  height: 1rem;
+}
+
 .h-40 {
   height: 10rem;
 }
@@ -605,6 +621,10 @@ video {
 
 .h-screen {
   height: 100vh;
+}
+
+.w-4 {
+  width: 1rem;
 }
 
 .w-40 {

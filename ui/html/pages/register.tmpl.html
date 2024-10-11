@@ -17,18 +17,72 @@
         <label for="email" class="text-xs text-gray-500 uppercase">Email</label>
         <input type="email" class="py-0.5 px-2 rounded-md border border-grey-300 outline-orange-500" name="email" id="email">
       </div>
-      <div class="mb-4 flex flex-col gap-0.5">
+      <div class="mb-4 flex flex-col gap-0.5 relative">
         <label for="password" class="text-xs text-gray-500 uppercase">Password</label>
-        <input type="password" class="py-0.5 px-2 rounded-md border border-grey-300 outline-orange-500" name="password" id="password">
+        <input
+          type="password"
+          class="py-0.5 px-2 rounded-md border border-grey-300 outline-orange-500"
+          name="password"
+          id="password"
+        >
+        <button
+          type="button"
+          class="h-4 w-4 text-grey-600 absolute right-[0.5rem] bottom-[0.4rem] z-10"
+          id="toggleEye">
+          <img id="eyeImg" src="../../static/pw-hide.svg">
+        </button>
       </div>
-      <div class="mb-6 flex flex-col gap-0.5">
+      <div class="mb-6 flex flex-col gap-0.5 relative">
         <label for="password_confirm" class="text-xs text-gray-500 uppercase">Confirm Password</label>
-        <input type="password" class="py-0.5 px-2 rounded-md border border-grey-300 outline-orange-500" name="password_confirm" id="password_confirm">
+        <input
+          type="password"
+          class="py-0.5 px-2 rounded-md border border-grey-300 outline-orange-500"
+          name="password_confirm"
+          id="password_confirm"
+        >
+        <button
+          type="button"
+          class="h-4 w-4 text-grey-600 absolute right-[0.5rem] bottom-[0.4rem] z-10"
+          id="confirmToggleEye">
+          <img id="confirmEyeImg" src="../../static/pw-hide.svg">
+        </button>
       </div>
       <div class="mb-4 flex flex-col gap-1">
         <button type="submit" class="bg-orange-500 hover:bg-orange-linear py-1 text-center text-white text-sm rounded-md">Register</button>
       </div>
       <p class="text-xs text-gray-500">Already a User? <a href="/login" class="underline">Login now</a>.</p>
+    </form>
   </section>
 </div>
+<script>
+
+function togglePWvisible() {
+  var x = document.getElementById("password");
+  var img = document.getElementById("eyeImg");
+  if (x.type === "password") {
+    x.type = "text";
+    img.src = "../../static/pw-see.svg"
+  } else {
+    x.type = "password";
+    img.src = "../../static/pw-hide.svg"
+  }
+}
+
+function togglePWconfirmVisible() {
+  var x = document.getElementById("password_confirm");
+  var img = document.getElementById("confirmEyeImg");
+  if (x.type === "password") {
+    x.type = "text";
+    img.src = "../../static/pw-see.svg"
+  } else {
+    x.type = "password";
+    img.src = "../../static/pw-hide.svg"
+  }
+}
+
+const button = document.getElementById("toggleEye");
+const confirmButton = document.getElementById("confirmToggleEye");
+button.addEventListener("click", togglePWvisible);
+confirmButton.addEventListener("click", togglePWconfirmVisible);
+</script>
 {{end}}
