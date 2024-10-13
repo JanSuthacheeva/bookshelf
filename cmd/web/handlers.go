@@ -2,6 +2,7 @@ package main
 
 import (
   "net/http"
+  "log/slog"
 )
 
 
@@ -13,7 +14,7 @@ func (app *application) getLogin(w http.ResponseWriter, r *http.Request) {
 
   err := parseTemplates(w, "base_guest", &files)
   if err != nil {
-    http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+    app.logger.Error(err.Error(), slog.String("method", r.Method), slog.String("uri", r.URL.RequestURI()))
     return
   }
 }
@@ -26,7 +27,7 @@ func (app *application) getRegister(w http.ResponseWriter, r *http.Request) {
 
   err := parseTemplates(w, "base_guest", &files)
   if err != nil {
-    http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+    app.logger.Error(err.Error(), slog.String("method", r.Method), slog.String("uri", r.URL.RequestURI()))
     return
   }
 }
@@ -39,7 +40,7 @@ func (app *application) getHome(w http.ResponseWriter, r *http.Request) {
 
   err := parseTemplates(w, "base_guest", &files)
   if err != nil {
-    http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+    app.logger.Error(err.Error(), slog.String("method", r.Method), slog.String("uri", r.URL.RequestURI()))
     return
   }
 }

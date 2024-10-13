@@ -2,6 +2,7 @@ package main
 
 import (
   "database/sql"
+  "log/slog"
   "net/http"
   "flag"
   "fmt"
@@ -14,11 +15,16 @@ import (
 type application struct {
   books     *models.BookModel
   users     *models.UserModel
+  logger    *slog.Logger
 }
 
 func main () {
   addr := flag.String("addr", ":4444", "HTTP network address.")
   dsn := flag.String("dsn", "web:pass@/bookshelf?parseTime=true", "MySQL data source name.")
+
+  logger := slog.New(slog.NewTextHandler(os.Stdout, &slog.HandlerOptions{
+    AddSource: true,
+  }))
 
   db, err := openDB(*dsn)
   if err != nil {
@@ -31,12 +37,14 @@ func main () {
 
   app := &application{
     books: &models.BookModel{DB : db},
+    users: &models.UserModel{DB: db},
+    logger: logger,
   }
 
-  fmt.Printf("Starting server at localhost%s\n", *addr)
+  logger.Info("Starting server at localhost", slog.String("addr", *addr))
   err = http.ListenAndServe(*addr, app.routes())
   if err != nil {
-    fmt.Println(err)
+    logger.Error(err.Error())
     os.Exit(1)
   }
 }
