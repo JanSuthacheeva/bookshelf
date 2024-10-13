@@ -1,17 +1,16 @@
 package models
 
 import (
-	"database/sql"
-	"errors"
-	"time"
+  "database/sql"
+  "time"
 )
 
 type Book struct {
   ID        int
   Title     string
   Author    string
-  Started   *time.Time
-  Finished  *time.Time
+  Started   time.Time
+  Finished  time.Time
 }
 
 type BookModel struct {
@@ -37,20 +36,6 @@ func (m *BookModel) Insert(title, author string, started, finished sql.NullTime)
 
 func (m *BookModel) Get(id int) (Book, error) {
   stmt := "SELECT id, title, author, started, finished FROM books WHERE id = ?"
-  
-  row := m.DB.QueryRow(stmt, id)
 
-  var b Book
-
-  err := row.Scan(&b.ID, &b.Title, &b.Author, &b.Started, &b.Finished)
-  if err != nil {
-    if errors.Is(err, sql.ErrNoRows) {
-      return Book{}, ErrNoRecord
-    } else {
-      return Book{}, err
-    }
-  }
-  return b, nil
 }
-
 

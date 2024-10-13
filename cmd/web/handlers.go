@@ -1,7 +1,13 @@
 package main
 
 import (
-  "net/http"
+	"database/sql"
+	"errors"
+	"fmt"
+	"net/http"
+	"strconv"
+
+	"github.com/jansuthacheeva/bookshelf/internal/models"
 )
 
 
@@ -31,6 +37,7 @@ func (app *application) getRegister(w http.ResponseWriter, r *http.Request) {
   }
 }
 
+
 func (app *application) getHome(w http.ResponseWriter, r *http.Request) {
   files := []string{
     "./ui/html/guest_base.tmpl.html",
@@ -57,10 +64,41 @@ func (app *application) getBooksCreate(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *application) postBooksCreate(w http.ResponseWriter, r *http.Request) {
-  return
+  title := "Let's Go"
+  author := "Alex Edwards"
+  started := sql.NullTime{
+    Valid: false,
+  }
+  finished := sql.NullTime{
+    Valid: false,
+  }
+
+  id, err := app.books.Insert(title, author, started, finished)
+  if err != nil {
+    app.serverError(w, r, err)
+    return
+  }
+
+  http.Redirect(w, r, fmt.Sprintf("/books/%d", id), http.StatusSeeOther)
 }
 
 func (app *application) getBookView(w http.ResponseWriter, r *http.Request) {
-  w.Write([]byte("Here comes your book."))
+  id, err := strconv.Atoi(r.PathValue("id"))
+  if err != nil || id < 1 {
+    http.NotFound(w, r)
+    return
+  }
+
+  book, err := app.books.Get(id)
+  if err != nil {
+    if errors.Is(err, models.ErrNoRecord) {
+      http.NotFound(w, r)
+    } else {
+      app.serverError(w, r,   err)
+    }
+    return
+  }
+
+  fmt.Fprintf(w, "%v", book)
 }
 
