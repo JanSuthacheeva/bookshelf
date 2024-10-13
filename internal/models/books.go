@@ -18,8 +18,21 @@ type BookModel struct {
   DB *sql.DB
 }
 
-func (m *BookModel) Insert(title, status, author string, started, finished time.Time) (int, error) {
-  return 0, nil
+func (m *BookModel) Insert(title, status, author string, started, finished sql.NullTime) (int, error) {
+
+  stmt := "INSERT INTO books(title, status, author, started, finished) VALUES (?, ?, ?, ?, ?)"
+
+  result, err := m.DB.Exec(stmt, title, status, author, started, finished)
+  if err != nil {
+    return 0, err
+  }
+
+  id, err := result.LastInsertId()
+  if err != nil {
+    return 0, err
+  }
+
+  return int(id), nil
 }
 
 func (m *BookModel) Get(id int) (Book, error) {

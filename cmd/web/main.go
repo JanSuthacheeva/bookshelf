@@ -10,6 +10,7 @@ import (
 
   "github.com/jansuthacheeva/bookshelf/internal/models"
   _ "github.com/go-sql-driver/mysql"
+  "github.com/joho/godotenv"
 )
 
 type application struct {
@@ -19,8 +20,9 @@ type application struct {
 }
 
 func main () {
-  addr := flag.String("addr", ":4444", "HTTP network address.")
-  dsn := flag.String("dsn", "web:pass@/bookshelf?parseTime=true", "MySQL data source name.")
+  godotenv.Load()
+  addr := flag.String("addr", os.Getenv("APPLICATION_PORT"), "HTTP network address.")
+  dsn := flag.String("dsn", os.Getenv("GOOSE_DBSTRING"), "MySQL data source name.")
 
   logger := slog.New(slog.NewTextHandler(os.Stdout, &slog.HandlerOptions{
     AddSource: true,
