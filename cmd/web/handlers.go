@@ -2,7 +2,6 @@ package main
 
 import (
   "net/http"
-  "log/slog"
 )
 
 
@@ -12,9 +11,9 @@ func (app *application) getLogin(w http.ResponseWriter, r *http.Request) {
     "./ui/html/pages/login.tmpl.html",
   }
 
-  err := parseTemplates(w, "base_guest", &files)
+  err := app.parseTemplates(w, "base_guest", &files)
   if err != nil {
-    app.logger.Error(err.Error(), slog.String("method", r.Method), slog.String("uri", r.URL.RequestURI()))
+    app.serverError(w, r, err)
     return
   }
 }
@@ -25,9 +24,9 @@ func (app *application) getRegister(w http.ResponseWriter, r *http.Request) {
     "./ui/html/pages/register.tmpl.html",
   }
 
-  err := parseTemplates(w, "base_guest", &files)
+  err := app.parseTemplates(w, "base_guest", &files)
   if err != nil {
-    app.logger.Error(err.Error(), slog.String("method", r.Method), slog.String("uri", r.URL.RequestURI()))
+    app.serverError(w, r, err)
     return
   }
 }
@@ -38,9 +37,9 @@ func (app *application) getHome(w http.ResponseWriter, r *http.Request) {
     "./ui/html/pages/home.tmpl.html",
   }
 
-  err := parseTemplates(w, "base_guest", &files)
+  err := app.parseTemplates(w, "base_guest", &files)
   if err != nil {
-    app.logger.Error(err.Error(), slog.String("method", r.Method), slog.String("uri", r.URL.RequestURI()))
+    app.serverError(w, r, err)
     return
   }
 }
