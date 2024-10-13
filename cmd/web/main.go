@@ -13,6 +13,7 @@ import (
 
 type application struct {
   books     *models.BookModel
+  users     *models.UserModel
 }
 
 func main () {

@@ -12,6 +12,7 @@
   "author": "Jan Steikowski <j.steikowski@aol.com>",
   "license": "MIT",
   "dependencies": {
+    "htmx.org": "^2.0.3",
     "tailwind": "^4.0.0"
   }
 }
