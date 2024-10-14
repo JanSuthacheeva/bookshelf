@@ -2,10 +2,10 @@ package main
 
 import (
   "database/sql"
+  "flag"
+  "html/template"
   "log/slog"
   "net/http"
-  "flag"
-  "fmt"
   "os"
 
   "github.com/jansuthacheeva/bookshelf/internal/models"
@@ -14,9 +14,10 @@ import (
 )
 
 type application struct {
-  books     *models.BookModel
-  users     *models.UserModel
-  logger    *slog.Logger
+  books           *models.BookModel
+  logger          *slog.Logger
+  templateCache   map[string]*template.Template
+  users           *models.UserModel
 }
 
 func main () {
@@ -30,17 +31,24 @@ func main () {
 
   db, err := openDB(*dsn)
   if err != nil {
-    fmt.Println(err.Error())
+    logger.Error(err.Error())
     os.Exit(1)
   }
   // defer the close function so that it's always closing the connection before the main function is
   // finished.
   defer db.Close()
 
+  templateCache, err := newTemplateCache()
+  if err != nil {
+    logger.Error(err.Error())
+    os.Exit(1)
+  }
+
   app := &application{
     books: &models.BookModel{DB : db},
-    users: &models.UserModel{DB: db},
     logger: logger,
+    templateCache: templateCache,
+    users: &models.UserModel{DB: db},
   }
 
   logger.Info("Starting server at localhost", slog.String("addr", *addr))

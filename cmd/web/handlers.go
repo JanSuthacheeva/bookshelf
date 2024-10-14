@@ -12,43 +12,16 @@ import (
 
 
 func (app *application) getLogin(w http.ResponseWriter, r *http.Request) {
-  files := []string{
-    "./ui/html/guest_base.tmpl.html",
-    "./ui/html/pages/login.tmpl.html",
-  }
-
-  err := app.parseTemplates(w, "base_guest", &files, nil)
-  if err != nil {
-    app.serverError(w, r, err)
-    return
-  }
+  app.render(w, r, http.StatusOK, "login.tmpl.html", "base_guest", templateData{})
 }
 
 func (app *application) getRegister(w http.ResponseWriter, r *http.Request) {
-  files := []string{
-    "./ui/html/guest_base.tmpl.html",
-    "./ui/html/pages/register.tmpl.html",
-  }
-
-  err := app.parseTemplates(w, "base_guest", &files, nil)
-  if err != nil {
-    app.serverError(w, r, err)
-    return
-  }
+  app.render(w, r, http.StatusOK, "register.tmpl.html", "base_guest", templateData{})
 }
 
 
 func (app *application) getHome(w http.ResponseWriter, r *http.Request) {
-  files := []string{
-    "./ui/html/guest_base.tmpl.html",
-    "./ui/html/pages/home.tmpl.html",
-  }
-
-  err := app.parseTemplates(w, "base_guest", &files, nil)
-  if err != nil {
-    app.serverError(w, r, err)
-    return
-  }
+  app.render(w, r, http.StatusOK, "home.tmpl.html", "base_guest", templateData{})
 }
 
 func (app *application) getDashboard(w http.ResponseWriter, r *http.Request) {
@@ -83,11 +56,6 @@ func (app *application) postBooksCreate(w http.ResponseWriter, r *http.Request) 
 }
 
 func (app *application) getBookView(w http.ResponseWriter, r *http.Request) {
-  files := []string{
-    "./ui/html/authenticated_base.tmpl.html",
-    "./ui/html/partials/nav.tmpl.html",
-    "./ui/html/pages/books/view.tmpl.html",
-  }
 
   id, err := strconv.Atoi(r.PathValue("id"))
   if err != nil || id < 1 {
@@ -105,11 +73,8 @@ func (app *application) getBookView(w http.ResponseWriter, r *http.Request) {
     return
   }
 
-
-  err = app.parseTemplates(w, "base_auth", &files, book)
-  if err != nil {
-    app.serverError(w, r, err)
-    return
-  }
+  app.render(w, r, http.StatusOK, "books_view.tmpl.html", "base_auth", templateData {
+    Book: book,
+  })
 }
 

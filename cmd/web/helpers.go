@@ -1,23 +1,30 @@
 package main
 
 import (
-	"html/template"
+	"bytes"
+	"fmt"
 	"log/slog"
 	"net/http"
-  "runtime/debug"
+	"runtime/debug"
 )
 
-func (app *application) parseTemplates(w http.ResponseWriter, layout string, files *[]string, data any) error {
-  tmpl, err := template.ParseFiles(*files...)
+func (app *application) render(w http.ResponseWriter, r *http.Request, status int, page, tmplType string, data templateData) {
+  tmpl, ok := app.templateCache[page]
+  if !ok {
+    err := fmt.Errorf("The template %s does not exist.", page)
+    app.serverError(w, r, err)
+    return
+  }
+  buf := new(bytes.Buffer)
+
+  err := tmpl.ExecuteTemplate(buf, tmplType, data)
   if err != nil {
-    return err
+    app.serverError(w, r, err)
   }
 
-  err = tmpl.ExecuteTemplate(w, layout, data)
-  if err != nil {
-    return err
-  }
-  return nil
+  w.WriteHeader(status)
+
+  buf.WriteTo(w)
 }
 
 func (app *application) serverError(w http.ResponseWriter, r *http.Request, err error) {

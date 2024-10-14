@@ -1,0 +1,17 @@
+{{define "title"}}Book {{.Book.ID}}{{end}}
+{{define "main"}}
+<section class="m-10">
+  <h1 class="text-2xl font-bold mb-2">{{.Book.Title}}</h1>
+  <p class="text-sm mb-6">by {{.Book.Author}}</p>
+  {{if .Book.Finished}}
+    <p>Status: Finished</p>
+    <p>Started: {{.Book.Started}}</p>
+    <p>Finished: {{.Book.Finished}}</p>
+  {{else if .Book.Started}}
+    <p>Status: Reading</p>
+    <p>Started: {{.Book.Started}}</p>
+  {{else}}
+    <p>Status: Not Started</p>
+  {{end}}
+</section>
+{{end}}
