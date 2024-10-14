@@ -7,13 +7,13 @@ import (
   "runtime/debug"
 )
 
-func (app *application) parseTemplates(w http.ResponseWriter, layout string, files *[]string) error {
+func (app *application) parseTemplates(w http.ResponseWriter, layout string, files *[]string, data any) error {
   tmpl, err := template.ParseFiles(*files...)
   if err != nil {
     return err
   }
 
-  err = tmpl.ExecuteTemplate(w, layout, nil)
+  err = tmpl.ExecuteTemplate(w, layout, data)
   if err != nil {
     return err
   }

@@ -17,7 +17,7 @@ func (app *application) getLogin(w http.ResponseWriter, r *http.Request) {
     "./ui/html/pages/login.tmpl.html",
   }
 
-  err := app.parseTemplates(w, "base_guest", &files)
+  err := app.parseTemplates(w, "base_guest", &files, nil)
   if err != nil {
     app.serverError(w, r, err)
     return
@@ -30,7 +30,7 @@ func (app *application) getRegister(w http.ResponseWriter, r *http.Request) {
     "./ui/html/pages/register.tmpl.html",
   }
 
-  err := app.parseTemplates(w, "base_guest", &files)
+  err := app.parseTemplates(w, "base_guest", &files, nil)
   if err != nil {
     app.serverError(w, r, err)
     return
@@ -44,7 +44,7 @@ func (app *application) getHome(w http.ResponseWriter, r *http.Request) {
     "./ui/html/pages/home.tmpl.html",
   }
 
-  err := app.parseTemplates(w, "base_guest", &files)
+  err := app.parseTemplates(w, "base_guest", &files, nil)
   if err != nil {
     app.serverError(w, r, err)
     return
@@ -88,11 +88,7 @@ func (app *application) getBookView(w http.ResponseWriter, r *http.Request) {
     "./ui/html/partials/nav.tmpl.html",
     "./ui/html/pages/books/view.tmpl.html",
   }
-  err := app.parseTemplates(w, "base_auth", &files)
-  if err != nil {
-    app.serverError(w, r, err)
-    return
-  }
+
   id, err := strconv.Atoi(r.PathValue("id"))
   if err != nil || id < 1 {
     http.NotFound(w, r)
@@ -109,6 +105,11 @@ func (app *application) getBookView(w http.ResponseWriter, r *http.Request) {
     return
   }
 
-  fmt.Fprintf(w, "%v", book)
+
+  err = app.parseTemplates(w, "base_auth", &files, book)
+  if err != nil {
+    app.serverError(w, r, err)
+    return
+  }
 }
 
