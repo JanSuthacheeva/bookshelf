@@ -37,7 +37,7 @@ func (m *BookModel) Insert(title, author string, started, finished sql.NullTime)
 
 func (m *BookModel) Get(id int) (Book, error) {
   stmt := "SELECT id, title, author, started, finished FROM books WHERE id = ?"
-  
+
   row := m.DB.QueryRow(stmt, id)
 
   var b Book

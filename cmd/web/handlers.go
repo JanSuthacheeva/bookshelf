@@ -83,6 +83,16 @@ func (app *application) postBooksCreate(w http.ResponseWriter, r *http.Request) 
 }
 
 func (app *application) getBookView(w http.ResponseWriter, r *http.Request) {
+  files := []string{
+    "./ui/html/authenticated_base.tmpl.html",
+    "./ui/html/partials/nav.tmpl.html",
+    "./ui/html/pages/books/view.tmpl.html",
+  }
+  err := app.parseTemplates(w, "base_auth", &files)
+  if err != nil {
+    app.serverError(w, r, err)
+    return
+  }
   id, err := strconv.Atoi(r.PathValue("id"))
   if err != nil || id < 1 {
     http.NotFound(w, r)

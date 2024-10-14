@@ -10,6 +10,9 @@ module.exports = {
       },
       maxWidth: {
         '3xl': '1800px'
+      },
+      colors: {
+        'gray-icon': '#8A8A8A'
       }
     },
   },

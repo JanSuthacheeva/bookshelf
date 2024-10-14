@@ -1,0 +1,31 @@
+{{define "nav"}}
+<nav class="flex flex-col justify-between items-center pt-8 h-full">
+  <section class="flex flex-col justify-start gap-8 items-center">
+  <h2 class="font-bold mx-auto text-center w-3/4 text-2xl">The Book <span class="text-orange-500">Haven</span></h2>
+  <ul class="flex flex-col gap-6">
+    <li>
+      <a href="/home" class="flex flex-row gap-2 items-center h-4">
+        <img src="../../static/img/home.svg" class="h-full">
+        <span class="text-gray-icon">Home</span>
+      </a>
+    </li>
+    <li>
+      <a href="/books" class="flex flex-row gap-2 items-center h-4">
+        <img src="../../static/img/books.svg" class="h-full">
+        <span class="text-gray-icon">My Books</span>
+      </a>
+    </li>
+    <li>
+      <a href="/books/create" class="flex flex-row gap-2 items-center h-4">
+        <img src="../../static/img/plus.svg" class="h-full">
+        <span class="text-gray-icon">New Entry</span>
+      </a>
+    </li>
+  </ul>
+  </section>
+  <ul class="mt-auto flex flex-col items-start gap-2">
+    <li><a href="/" class="w-1/2 text-gray-icon">Settings</a></li>
+    <li><a href="/" class="w-1/2 text-gray-icon">Logout</a></li>
+  </ul>
+</nav>
+{{end}}
