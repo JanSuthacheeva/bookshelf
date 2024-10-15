@@ -5,11 +5,11 @@
   <p class="text-sm mb-6">by {{.Book.Author}}</p>
   {{if .Book.Finished}}
     <p>Status: Finished</p>
-    <p>Started: {{.Book.Started}}</p>
-    <p>Finished: {{.Book.Finished}}</p>
+    <p>Started: {{humanDate .Book.Started}}</p>
+    <p>Finished: {{humanDate .Book.Finished}}</p>
   {{else if .Book.Started}}
     <p>Status: Reading</p>
-    <p>Started: {{.Book.Started}}</p>
+    <p>Started: {{humanDate .Book.Started}}</p>
   {{else}}
     <p>Status: Not Started</p>
   {{end}}

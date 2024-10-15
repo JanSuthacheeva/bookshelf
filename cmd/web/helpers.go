@@ -16,7 +16,6 @@ func (app *application) render(w http.ResponseWriter, r *http.Request, status in
     return
   }
   buf := new(bytes.Buffer)
-
   err := tmpl.ExecuteTemplate(buf, tmplType, data)
   if err != nil {
     app.serverError(w, r, err)

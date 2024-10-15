@@ -72,9 +72,10 @@ func (app *application) getBookView(w http.ResponseWriter, r *http.Request) {
     }
     return
   }
+  
+  data := app.newTemplateData(r)
+  data.Book = book
 
-  app.render(w, r, http.StatusOK, "books_view.tmpl.html", "base_auth", templateData {
-    Book: book,
-  })
+  app.render(w, r, http.StatusOK, "books_view.tmpl.html", "base_auth", data)
 }
 

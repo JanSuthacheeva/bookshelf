@@ -2,13 +2,27 @@ package main
 
 import (
 	"html/template"
+	"net/http"
 	"path/filepath"
+	"time"
 
 	"github.com/jansuthacheeva/bookshelf/internal/models"
 )
 
 type templateData struct{
   Book models.Book
+}
+
+var functions = template.FuncMap{
+  "humanDate": humanDate,
+}
+
+func (app *application) newTemplateData(r *http.Request) templateData {
+  return templateData{}
+}
+
+func humanDate(t time.Time) string {
+  return t.Format("02 Jan 2006 at 15:04")
 }
 
 func newTemplateCache() (map[string]*template.Template, error) {
@@ -36,6 +50,7 @@ func newTemplateCache() (map[string]*template.Template, error) {
   return cache, nil
 }
 
+
 func loopOverPages(cache map[string]*template.Template, pages []string, templateType string) (map[string]*template.Template, error) {
 
   var baseTemplate = []string{}
@@ -50,7 +65,7 @@ func loopOverPages(cache map[string]*template.Template, pages []string, template
 
     files := append(baseTemplate, page)
 
-    ts, err := template.ParseFiles(files...)
+    ts, err := template.New(name).Funcs(functions).ParseFiles(files...)
     if err != nil {
       return nil, err
     }
