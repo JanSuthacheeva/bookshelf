@@ -9,7 +9,8 @@ import (
 func (app *application) routes() http.Handler {
   mux := http.NewServeMux()
 
-  mux.Handle("GET /static/", http.FileServerFS(ui.Files))
+  fileServer := http.FileServer(http.Dir("./ui/static"))
+  mux.Handle("GET /static/", http.StripPrefix("/static", fileServer))
 
   mux.HandleFunc("/", app.getHome)
 
@@ -21,5 +22,5 @@ func (app *application) routes() http.Handler {
   mux.HandleFunc("GET /books/create", app.getBooksCreate)
   mux.HandleFunc("GET /books/{id}", app.getBookView)
 
-  return mux
+  return commonHeaders(mux)
 }
