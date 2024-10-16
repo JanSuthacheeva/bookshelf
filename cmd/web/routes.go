@@ -22,5 +22,5 @@ func (app *application) routes() http.Handler {
   mux.HandleFunc("GET /books/create", app.getBooksCreate)
   mux.HandleFunc("GET /books/{id}", app.getBookView)
 
-  return commonHeaders(mux)
+  return app.logRequest(commonHeaders(mux))
 }
