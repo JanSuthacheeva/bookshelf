@@ -5,6 +5,8 @@
     <meta charset="utf-8">
     <title>{{template "title" .}} - Bookshelf</title>
     <link rel="stylesheet" href="../static/css/tailwind.css"/>
+    <link rel="stylesheet" href="../static/css/main.css"/>
+    <script src="../static/js/htmx.min.js"></script>
   </head>
   <body class="flex justify-between flex-col items-center h-screen w-screen bg-orange-linear m-0 pt-8 px-10">
     <main class="flex-grow bg-white w-full rounded-2xl p-4 relative overflow-hidden">
@@ -14,6 +16,5 @@
     <div>
   </body>
   <footer class="mx-auto">Powered by <a href="https://golang.org">Golang</a></footer>
-  <script src="../static/js/htmx.min.js"></script>
 </html>
 {{end}}
