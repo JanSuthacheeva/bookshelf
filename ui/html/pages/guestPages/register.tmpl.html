@@ -29,7 +29,7 @@
           type="button"
           class="h-4 w-4 text-grey-600 absolute right-[0.5rem] bottom-[0.4rem] z-10"
           id="toggleEye">
-          <img id="eyeImg" src="../../static/pw-hide.svg">
+          <img id="eyeImg" src="../../../static/img/pw-hide.svg">
         </button>
       </div>
       <div class="mb-6 flex flex-col gap-0.5 relative">
@@ -44,7 +44,7 @@
           type="button"
           class="h-4 w-4 text-grey-600 absolute right-[0.5rem] bottom-[0.4rem] z-10"
           id="confirmToggleEye">
-          <img id="confirmEyeImg" src="../../static/pw-hide.svg">
+          <img id="confirmEyeImg" src="../../../static/img/pw-hide.svg">
         </button>
       </div>
       <div class="mb-4 flex flex-col gap-1">
@@ -53,36 +53,6 @@
       <p class="text-xs text-gray-500">Already a User? <a href="/login" class="underline">Login now</a>.</p>
     </form>
   </section>
+  <script src="../../../static/js/register.js"></script>
 </div>
-<script>
-
-function togglePWvisible() {
-  var x = document.getElementById("password");
-  var img = document.getElementById("eyeImg");
-  if (x.type === "password") {
-    x.type = "text";
-    img.src = "../../static/img/pw-see.svg"
-  } else {
-    x.type = "password";
-    img.src = "../../static/img/pw-hide.svg"
-  }
-}
-
-function togglePWconfirmVisible() {
-  var x = document.getElementById("password_confirm");
-  var img = document.getElementById("confirmEyeImg");
-  if (x.type === "password") {
-    x.type = "text";
-    img.src = "../../static/img/pw-see.svg"
-  } else {
-    x.type = "password";
-    img.src = "../../static/img/pw-hide.svg"
-  }
-}
-
-const button = document.getElementById("toggleEye");
-const confirmButton = document.getElementById("confirmToggleEye");
-button.addEventListener("click", togglePWvisible);
-confirmButton.addEventListener("click", togglePWconfirmVisible);
-</script>
 {{end}}

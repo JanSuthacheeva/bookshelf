@@ -2,8 +2,6 @@ package main
 
 import (
   "net/http"
-
-  "github.com/jansuthacheeva/bookshelf/ui"
 )
 
 func (app *application) routes() http.Handler {

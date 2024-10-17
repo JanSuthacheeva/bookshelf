@@ -25,7 +25,7 @@
           type="button"
           class="h-4 w-4 text-grey-600 absolute right-[0.5rem] bottom-[0.4rem] z-10"
           id="toggleEye">
-          <img id="eyeImg" src="../../static/pw-hide.svg">
+          <img id="eyeImg" src="../../../static/img/pw-hide.svg">
         </button>
       </div>
       <div class="mb-4 flex justify-end">
@@ -42,21 +42,5 @@
     </form>
   </section>
 </div>
-<script>
-function togglePWvisible() {
-  var x = document.getElementById("password");
-  var img = document.getElementById("eyeImg");
-  if (x.type === "password") {
-    x.type = "text";
-    img.src = "../../static/img/pw-see.svg"
-  } else {
-    x.type = "password";
-    img.src = "../../static/img/pw-hide.svg"
-  }
-}
-
-const button = document.getElementById("toggleEye");
-button.addEventListener("click", togglePWvisible);
-
-</script>
+<script src="../../../static/js/login.js"></script>
 {{end}}
