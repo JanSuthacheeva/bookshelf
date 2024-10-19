@@ -21,7 +21,7 @@ func (app *application) getRegister(w http.ResponseWriter, r *http.Request) {
 
 
 func (app *application) getHome(w http.ResponseWriter, r *http.Request) {
-  app.render(w, r, http.StatusOK, "home.tmpl.html", "base_guest", templateData{})
+  app.render(w, r, http.StatusOK, "home.tmpl.html", "base_auth", templateData{})
 }
 
 func (app *application) getDashboard(w http.ResponseWriter, r *http.Request) {
@@ -33,7 +33,7 @@ func (app *application) getBooks(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *application) getBooksCreate(w http.ResponseWriter, r *http.Request) {
-  return
+  app.render(w, r, http.StatusOK, "books_create.tmpl.html", "base_auth", templateData{})
 }
 
 func (app *application) postBooksCreate(w http.ResponseWriter, r *http.Request) {
