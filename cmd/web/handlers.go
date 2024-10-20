@@ -1,12 +1,10 @@
 package main
 
 import (
-	"database/sql"
 	"errors"
 	"fmt"
 	"net/http"
 	"strconv"
-	"time"
 
 	"github.com/jansuthacheeva/bookshelf/internal/models"
 )
@@ -48,41 +46,34 @@ func (app *application) postBooksCreate(w http.ResponseWriter, r *http.Request) 
   startedReq := r.PostForm.Get("started")
   finishedReq := r.PostForm.Get("finished")
 
-  var started sql.NullTime
-  if startedReq == "" {
-    started = sql.NullTime{
-      Valid: false,
-    }
-  } else {
-    parsedDate, err := time.Parse("2006-02-02", startedReq)
-    if err != nil {
-      app.logger.Info(err.Error())
-      app.clientError(w, http.StatusBadRequest)
-      return
-    }
-    started = sql.NullTime{
-      Time: parsedDate,
-      Valid: true,
-    }
+  // var started sql.NullTime
+  // if startedReq == "" {
+  //   started = sql.NullTime{
+  //     Valid: false,
+  //   }
+  // } else {
+  //   parsedDate, err := time.Parse("2006-02-02", startedReq)
+  //   if err != nil {
+  //     app.logger.Info(err.Error())
+  //     app.clientError(w, http.StatusBadRequest)
+  //     return
+  //   }
+  //   started = sql.NullTime{
+  //     Time: parsedDate,
+  //     Valid: true,
+  //   }
+  // }
+  started, err := app.transformDateStringToSqlNullTime(startedReq)
+  if err != nil {
+    app.clientError(w, http.StatusBadRequest)
+    return
   }
 
-  var finished sql.NullTime
-  if finishedReq == "" {
-    finished = sql.NullTime{
-      Valid: false,
-    }
-  } else {
-    parsedDate, err := time.Parse("2006-02-02", finishedReq)
-    if err != nil {
-      app.clientError(w, http.StatusBadRequest)
-      return
-    }
-    finished = sql.NullTime{
-      Time: parsedDate,
-      Valid: true,
-    }
+  finished, err := app.transformDateStringToSqlNullTime(finishedReq)
+  if err != nil {
+    app.clientError(w, http.StatusBadRequest)
+    return
   }
-
 
   if title == "" {
     app.render(w, r, http.StatusUnprocessableEntity, "books_create.tmpl.html", "createBookForm", templateData{})
