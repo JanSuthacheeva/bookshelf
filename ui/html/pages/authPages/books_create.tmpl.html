@@ -2,34 +2,34 @@
 
 {{define "main"}}
 <div id="main" class="flex flex-col justify-center items-center w-full h-full">
-  <form class="w-96 flex flex-col rounded-lg p-14">
-    <div class="flex gap-2 justify-start">
-    <h1 class="font-bold text-xl mx-auto mb-6">Add a New Book</h1>
-    </div>
-    <div class="mb-4 flex flex-col gap-0.5">
-      <label for="title" class="text-xs text-gray-500 uppercase">Title</label>
-      <input type="text" class="py-0.5 px-2 rounded-md border border-grey-300 outline-orange-500" name="title" id="title">
-    </div>
-    <div class="mb-4 flex flex-col gap-0.5">
-      <label for="author" class="text-xs text-gray-500 uppercase">Author</label>
-      <input type="text" class="py-0.5 px-2 rounded-md border border-grey-300 outline-orange-500" name="author" id="author">
-    </div>
-    <div class="mb-4 flex flex-col gap-0.5">
-      <label for="started" class="text-xs text-gray-500 uppercase">Started*</label>
-      <input type="date" class="py-0.5 px-2 rounded-md border border-grey-300 outline-orange-500" name="started" id="started">
-    </div>
-    <div class="mb-2 flex flex-col gap-0.5">
-      <label for="finished" class="text-xs text-gray-500 uppercase">Finished*</label>
-      <input type="date" class="py-0.5 px-2 rounded-md border border-grey-300 outline-orange-500" name="finished" id="finished">
-    </div>
-    <span class="text-xs mb-2">Fields marked with * are optional</span>
-    <div class="mb-4 flex flex-col gap-0.5">
-      <button hx-post="/books/create" hx-target="#main"
-        class="bg-orange-500 hover:bg-orange-linear py-1 text-center text-white text-sm rounded-md">Add</button>
-    </div>
-  </form>
+  {{block "createBookForm" .}}
+    <form class="w-96 flex flex-col rounded-lg p-14" id="createForm">
+      <div class="flex gap-2 justify-start">
+      <h1 class="font-bold text-xl mx-auto mb-6">Add a New Book</h1>
+      </div>
+      <div class="mb-4 flex flex-col gap-0.5">
+        <label for="title" class="text-xs text-gray-500 uppercase">Title</label>
+        <input type="text" class="py-0.5 px-2 rounded-md border border-grey-300 outline-orange-500" name="title" id="title">
+      </div>
+      <div class="mb-4 flex flex-col gap-0.5">
+        <label for="author" class="text-xs text-gray-500 uppercase">Author</label>
+        <input type="text" class="py-0.5 px-2 rounded-md border border-grey-300 outline-orange-500" name="author" id="author">
+      </div>
+      <div class="mb-4 flex flex-col gap-0.5">
+        <label for="started" class="text-xs text-gray-500 uppercase">Started*</label>
+        <input type="date" class="py-0.5 px-2 rounded-md border border-grey-300 outline-orange-500" name="started" id="started">
+      </div>
+      <div class="mb-2 flex flex-col gap-0.5">
+        <label for="finished" class="text-xs text-gray-500 uppercase">Finished*</label>
+        <input type="date" class="py-0.5 px-2 rounded-md border border-grey-300 outline-orange-500" name="finished" id="finished">
+      </div>
+      <span class="text-xs mb-2">Fields marked with * are optional</span>
+      <div class="mb-4 flex flex-col gap-0.5">
+        <button hx-post="/books/create" hx-target="#createForm" hx-swap="outerHTML"
+          class="bg-orange-500 hover:bg-orange-linear py-1 text-center text-white text-sm rounded-md">Add</button>
+      </div>
+    </form>
+  {{end}}
 </div>
-
-
 {{end}}
 

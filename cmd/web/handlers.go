@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
+	"time"
 
 	"github.com/jansuthacheeva/bookshelf/internal/models"
 )
@@ -21,7 +22,7 @@ func (app *application) getRegister(w http.ResponseWriter, r *http.Request) {
 
 
 func (app *application) getHome(w http.ResponseWriter, r *http.Request) {
-  app.render(w, r, http.StatusOK, "home.tmpl.html", "base_auth", templateData{})
+  app.render(w, r, http.StatusOK, "home.tmpl.html", "base_guest", templateData{})
 }
 
 func (app *application) getDashboard(w http.ResponseWriter, r *http.Request) {
@@ -37,13 +38,57 @@ func (app *application) getBooksCreate(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *application) postBooksCreate(w http.ResponseWriter, r *http.Request) {
-  title := "Let's Go"
-  author := "Alex Edwards"
-  started := sql.NullTime{
-    Valid: false,
+  err := r.ParseForm()
+  if err != nil {
+    app.clientError(w, http.StatusBadRequest)
+    return
   }
-  finished := sql.NullTime{
-    Valid: false,
+  title := r.PostForm.Get("title")
+  author := r.PostForm.Get("author")
+  startedReq := r.PostForm.Get("started")
+  finishedReq := r.PostForm.Get("finished")
+
+  var started sql.NullTime
+  if startedReq == "" {
+    started = sql.NullTime{
+      Valid: false,
+    }
+  } else {
+    parsedDate, err := time.Parse("2006-02-02", startedReq)
+    if err != nil {
+      app.logger.Info(err.Error())
+      app.clientError(w, http.StatusBadRequest)
+      return
+    }
+    started = sql.NullTime{
+      Time: parsedDate,
+      Valid: true,
+    }
+  }
+
+  var finished sql.NullTime
+  if finishedReq == "" {
+    finished = sql.NullTime{
+      Valid: false,
+    }
+  } else {
+    parsedDate, err := time.Parse("2006-02-02", finishedReq)
+    if err != nil {
+      app.clientError(w, http.StatusBadRequest)
+      return
+    }
+    finished = sql.NullTime{
+      Time: parsedDate,
+      Valid: true,
+    }
+  }
+
+
+  if title == "" {
+    app.render(w, r, http.StatusUnprocessableEntity, "books_create.tmpl.html", "createBookForm", templateData{})
+  }
+  if author == "" {
+    app.render(w, r, http.StatusUnprocessableEntity, "books_create.tmpl.html", "createBookForm", templateData{})
   }
 
   id, err := app.books.Insert(title, author, started, finished)
@@ -51,8 +96,9 @@ func (app *application) postBooksCreate(w http.ResponseWriter, r *http.Request) 
     app.serverError(w, r, err)
     return
   }
+  w.Header().Set("HX-Redirect", fmt.Sprintf("/books/%d", id));
+  w.WriteHeader(http.StatusSeeOther)
 
-  http.Redirect(w, r, fmt.Sprintf("/books/%d", id), http.StatusSeeOther)
 }
 
 func (app *application) getBookView(w http.ResponseWriter, r *http.Request) {
@@ -72,7 +118,6 @@ func (app *application) getBookView(w http.ResponseWriter, r *http.Request) {
     }
     return
   }
-  
   data := app.newTemplateData(r)
   data.Book = book
 
