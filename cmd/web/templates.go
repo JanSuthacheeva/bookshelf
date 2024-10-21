@@ -10,7 +10,8 @@ import (
 )
 
 type templateData struct{
-  Book models.Book
+  Book	  models.Book
+  Form	  any
 }
 
 var functions = template.FuncMap{
@@ -62,6 +63,9 @@ func loopOverPages(cache map[string]*template.Template, pages []string, template
   for _, page := range pages {
     name := filepath.Base(page)
 
+    if name == "books_create.tmpl.html" {
+      baseTemplate = append(baseTemplate, "./ui/html/bookCreateForm.html")
+    }
 
     files := append(baseTemplate, page)
 

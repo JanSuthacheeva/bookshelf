@@ -3,11 +3,22 @@ package main
 import (
 	"errors"
 	"fmt"
+	"html/template"
 	"net/http"
 	"strconv"
+	"strings"
+	"unicode/utf8"
 
 	"github.com/jansuthacheeva/bookshelf/internal/models"
 )
+
+type bookCreateForm struct {
+  Title		  string
+  Author	  string
+  Started	  string
+  Finished	  string
+  FieldErrors	  map[string]string
+}
 
 
 func (app *application) getLogin(w http.ResponseWriter, r *http.Request) {
@@ -32,7 +43,9 @@ func (app *application) getBooks(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *application) getBooksCreate(w http.ResponseWriter, r *http.Request) {
-  app.render(w, r, http.StatusOK, "books_create.tmpl.html", "base_auth", templateData{})
+  data := app.newTemplateData(r)
+  data.Form = bookCreateForm{}
+  app.render(w, r, http.StatusOK, "books_create.tmpl.html", "base_auth", data)
 }
 
 func (app *application) postBooksCreate(w http.ResponseWriter, r *http.Request) {
@@ -41,55 +54,62 @@ func (app *application) postBooksCreate(w http.ResponseWriter, r *http.Request) 
     app.clientError(w, http.StatusBadRequest)
     return
   }
-  title := r.PostForm.Get("title")
-  author := r.PostForm.Get("author")
-  startedReq := r.PostForm.Get("started")
-  finishedReq := r.PostForm.Get("finished")
 
-  // var started sql.NullTime
-  // if startedReq == "" {
-  //   started = sql.NullTime{
-  //     Valid: false,
-  //   }
-  // } else {
-  //   parsedDate, err := time.Parse("2006-02-02", startedReq)
-  //   if err != nil {
-  //     app.logger.Info(err.Error())
-  //     app.clientError(w, http.StatusBadRequest)
-  //     return
-  //   }
-  //   started = sql.NullTime{
-  //     Time: parsedDate,
-  //     Valid: true,
-  //   }
-  // }
-  started, err := app.transformDateStringToSqlNullTime(startedReq)
+  form := bookCreateForm{
+    Title:	  r.PostForm.Get("title"),
+    Author:   	  r.PostForm.Get("author"),
+    Started:  	  r.PostForm.Get("started"),
+    Finished: 	  r.PostForm.Get("finished"),
+    FieldErrors:  map[string]string{},
+  }
+
+  started, err := app.transformDateStringToSqlNullTime(form.Started)
   if err != nil {
-    app.clientError(w, http.StatusBadRequest)
+    form.FieldErrors["started"] = "This field must be a valid date.";
     return
   }
 
-  finished, err := app.transformDateStringToSqlNullTime(finishedReq)
+  finished, err := app.transformDateStringToSqlNullTime(form.Finished)
   if err != nil {
-    app.clientError(w, http.StatusBadRequest)
+    form.FieldErrors["finished"] = "This field must be a valid date.";
     return
   }
 
-  if title == "" {
-    app.render(w, r, http.StatusUnprocessableEntity, "books_create.tmpl.html", "createBookForm", templateData{})
-  }
-  if author == "" {
-    app.render(w, r, http.StatusUnprocessableEntity, "books_create.tmpl.html", "createBookForm", templateData{})
+
+  if strings.TrimSpace(form.Title) == "" {
+    form.FieldErrors["title"] = "This field cannot be blank."
+  } else if utf8.RuneCountInString(form.Title) > 120 {
+    form.FieldErrors["title"] = "This field cannot be more than 120 characters long."
   }
 
-  id, err := app.books.Insert(title, author, started, finished)
+  if strings.TrimSpace(form.Author) == "" {
+    form.FieldErrors["author"] = "This field cannot be blank."
+  } else if utf8.RuneCountInString(form.Author) > 120 {
+    form.FieldErrors["author"] = "This field cannot be more than 120 characters long."
+  }
+
+  if len(form.FieldErrors) > 0 {
+    data := app.newTemplateData(r)
+    data.Form = form
+    tmpl, err := template.ParseFiles("./ui/html/bookCreateForm.html")
+    if err != nil {
+      app.serverError(w, r, err)
+    }
+    w.WriteHeader(http.StatusUnprocessableEntity)
+    err = tmpl.ExecuteTemplate(w, "bookCreateForm", data)
+    if err != nil {
+      app.serverError(w, r, err)
+    }
+    return
+  }
+
+  id, err := app.books.Insert(form.Title, form.Author, started, finished)
   if err != nil {
     app.serverError(w, r, err)
     return
   }
   w.Header().Set("HX-Redirect", fmt.Sprintf("/books/%d", id));
   w.WriteHeader(http.StatusSeeOther)
-
 }
 
 func (app *application) getBookView(w http.ResponseWriter, r *http.Request) {
