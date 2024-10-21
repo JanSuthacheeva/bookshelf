@@ -3,7 +3,6 @@ package main
 import (
 	"errors"
 	"fmt"
-	"html/template"
 	"net/http"
 	"strconv"
 	"strings"
@@ -91,15 +90,7 @@ func (app *application) postBooksCreate(w http.ResponseWriter, r *http.Request) 
   if len(form.FieldErrors) > 0 {
     data := app.newTemplateData(r)
     data.Form = form
-    tmpl, err := template.ParseFiles("./ui/html/bookCreateForm.html")
-    if err != nil {
-      app.serverError(w, r, err)
-    }
-    w.WriteHeader(http.StatusUnprocessableEntity)
-    err = tmpl.ExecuteTemplate(w, "bookCreateForm", data)
-    if err != nil {
-      app.serverError(w, r, err)
-    }
+    app.render(w, r, http.StatusUnprocessableEntity, "books_create.tmpl.html", "bookCreateForm", data)
     return
   }
 
