@@ -10,7 +10,8 @@ import (
 )
 
 type templateData struct{
-  Book models.Book
+  Book	  models.Book
+  Form	  any
 }
 
 var functions = template.FuncMap{
@@ -22,7 +23,7 @@ func (app *application) newTemplateData(r *http.Request) templateData {
 }
 
 func humanDate(t time.Time) string {
-  return t.Format("02 Jan 2006 at 15:04")
+  return t.Format("02. January 2006")
 }
 
 func newTemplateCache() (map[string]*template.Template, error) {
@@ -61,7 +62,6 @@ func loopOverPages(cache map[string]*template.Template, pages []string, template
   }
   for _, page := range pages {
     name := filepath.Base(page)
-
 
     files := append(baseTemplate, page)
 
