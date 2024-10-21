@@ -5,10 +5,9 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
-	"strings"
-	"unicode/utf8"
 
 	"github.com/jansuthacheeva/bookshelf/internal/models"
+	"github.com/jansuthacheeva/bookshelf/internal/validator"
 )
 
 type bookCreateForm struct {
@@ -16,7 +15,7 @@ type bookCreateForm struct {
   Author	  string
   Started	  string
   Finished	  string
-  FieldErrors	  map[string]string
+  validator.Validator
 }
 
 
@@ -59,35 +58,27 @@ func (app *application) postBooksCreate(w http.ResponseWriter, r *http.Request) 
     Author:   	  r.PostForm.Get("author"),
     Started:  	  r.PostForm.Get("started"),
     Finished: 	  r.PostForm.Get("finished"),
-    FieldErrors:  map[string]string{},
   }
 
   started, err := app.transformDateStringToSqlNullTime(form.Started)
   if err != nil {
-    form.FieldErrors["started"] = "This field must be a valid date.";
+    form.AddFieldError("started", "This field must be a valid date.")
     return
   }
 
   finished, err := app.transformDateStringToSqlNullTime(form.Finished)
   if err != nil {
-    form.FieldErrors["finished"] = "This field must be a valid date.";
+    form.AddFieldError("finished", "This field must be a valid date.")
     return
   }
 
 
-  if strings.TrimSpace(form.Title) == "" {
-    form.FieldErrors["title"] = "This field cannot be blank."
-  } else if utf8.RuneCountInString(form.Title) > 120 {
-    form.FieldErrors["title"] = "This field cannot be more than 120 characters long."
-  }
+  form.CheckField(validator.NotBlank(form.Title), "title", "This field cannot be blank.")
+  form.CheckField(validator.MaxChars(form.Title, 120), "title", "This field cannot be more than 120 characters long.")
+  form.CheckField(validator.NotBlank(form.Author), "author", "This field cannot be blank.")
+  form.CheckField(validator.MaxChars(form.Author, 120), "author", "This field cannot be more than 120 characters long.")
 
-  if strings.TrimSpace(form.Author) == "" {
-    form.FieldErrors["author"] = "This field cannot be blank."
-  } else if utf8.RuneCountInString(form.Author) > 120 {
-    form.FieldErrors["author"] = "This field cannot be more than 120 characters long."
-  }
-
-  if len(form.FieldErrors) > 0 {
+  if !form.Valid() {
     data := app.newTemplateData(r)
     data.Form = form
     app.render(w, r, http.StatusUnprocessableEntity, "books_create.tmpl.html", "bookCreateForm", data)
