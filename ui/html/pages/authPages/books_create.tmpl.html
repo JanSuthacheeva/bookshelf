@@ -7,39 +7,33 @@
       <div class="flex gap-2 justify-start">
       <h1 class="font-bold text-xl mx-auto mb-6">Add a New Book</h1>
       </div>
-      <div class="mb-4 flex flex-col gap-0.5">
-        <div class="flex flex-row justify start w-full items-center">
-          <label for="finished" class="text-xs text-gray-500 uppercase">Title</label>
-          {{ with .Form.FieldErrors.title }}
-            <label class="text-xs text-red-500 ml-auto">{{.}}</label>
-          {{end}}
-        </div>
+      <div class="mb-4 flex flex-col gap-0.5 relative">
+        <label for="finished" class="text-xs text-gray-500 uppercase">Title</label>
         <input type="text" class="py-0.5 px-2 rounded-md border border-grey-300 outline-orange-500" name="title" id="title">
+        {{ with .Form.FieldErrors.title }}
+          <label class="absolute bottom-[-1.2rem] right-0 text-xs text-red-500 ml-auto">{{.}}</label>
+        {{end}}
       </div>
-      <div class="mb-4 flex flex-col gap-0.5">
-      <div class="flex flex-row justify start w-full items-center">
+      <div class="mb-4 flex flex-col gap-0.5 relative">
         <label for="finished" class="text-xs text-gray-500 uppercase">Author</label>
-        {{ with .Form.FieldErrors.author }}
-          <label class="text-xs text-red-500 ml-auto">{{.}}</label>
-        {{end}}
-      </div>
         <input type="text" class="py-0.5 px-2 rounded-md border border-grey-300 outline-orange-500" name="author" id="author">
-      </div>
-      <div class="mb-4 flex flex-col gap-0.5">
-        <label for="started" class="text-xs text-gray-500 uppercase">Started*</label>
-        {{ with .Form.FieldErrors.started }}
-          <label class="text-sm text-red-500">{{.}}</label>
+        {{ with .Form.FieldErrors.author }}
+          <label class="absolute bottom-[-1.2rem] right-0 text-xs text-red-500 ml-auto">{{.}}</label>
         {{end}}
-        <input type="date" class="py-0.5 px-2 rounded-md border border-grey-300 outline-orange-500" name="started" id="started">
       </div>
-      <div class="mb-2 flex flex-col gap-0.5">
-        <div class="flex flex-row justify start w-full">
-          <label for="finished" class="text-xs text-gray-500 uppercase">Finished*</label>
-          {{ with .Form.FieldErrors.finished }}
-            <label class="text-sm text-red-500 ml-auto">{{.}}</label>
-          {{end}}
-        </div>
+      <div class="mb-4 flex flex-col gap-0.5 relative">
+        <label for="started" class="text-xs text-gray-500 uppercase">Started*</label>
+        <input type="date" class="py-0.5 px-2 rounded-md border border-grey-300 outline-orange-500" name="started" id="started">
+        {{ with .Form.FieldErrors.started }}
+          <label class="absolute bottom-[-1.2rem] right-0 text-xs text-red-500 ml-auto">{{.}}</label>
+        {{end}}
+      </div>
+      <div class="mb-4 flex flex-col gap-0.5 relative">
+        <label for="finished" class="text-xs text-gray-500 uppercase">Finished*</label>
         <input type="date" class="py-0.5 px-2 rounded-md border border-grey-300 outline-orange-500" name="finished" id="finished">
+        {{ with .Form.FieldErrors.finished }}
+          <label class="absolute bottom-[-1.2rem] right-0 text-xs text-red-500 ml-auto">{{.}}</label>
+        {{end}}
       </div>
       <span class="text-xs mb-2">Fields marked with * are optional</span>
       <div class="mb-4 flex flex-col gap-0.5">
