@@ -53,4 +53,34 @@ func (m *BookModel) Get(id int) (Book, error) {
   return b, nil
 }
 
+func (m *BookModel) Latest() ([]Book, error) {
+  stmt := "SELECT id, title, author, started, finished FROM books ORDER BY id DESC LIMIT 10"
+
+  rows, err := m.DB.Query(stmt)
+  if err != nil {
+    return nil, err
+  }
+
+  defer rows.Close()
+
+  var books []Book
+
+  for rows.Next() {
+    var b Book
+
+    err = rows.Scan(&b.ID, &b.Title, &b.Author, &b.Started, &b.Finished)
+    if err != nil {
+      return nil, err
+    }
+
+    books = append(books, b)
+  }
+
+  if err = rows.Err(); err != nil {
+    return nil, err
+  }
+
+  return books, nil
+}
+
 
