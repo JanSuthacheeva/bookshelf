@@ -1,7 +1,6 @@
 package main
 
 import (
-	"database/sql"
 	"errors"
 	"fmt"
 	"net/http"
@@ -46,7 +45,7 @@ func (app *application) getBooks(w http.ResponseWriter, r *http.Request) {
   data := app.newTemplateData(r)
   data.Books = books
 
-  app.render(w, r, http.StatusOK, "books_index.html", "base_auth", data)
+  app.render(w, r, http.StatusOK, "books_index.tmpl.html", "base_auth", data)
 }
 
 func (app *application) getBooksCreate(w http.ResponseWriter, r *http.Request) {
