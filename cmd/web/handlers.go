@@ -37,7 +37,7 @@ func (app *application) getDashboard(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *application) getBooks(w http.ResponseWriter, r *http.Request) {
-  books, err := app.books.Latest()
+  books, err := app.books.All()
   if err != nil {
     app.serverError(w, r, err)
   }

@@ -12,6 +12,7 @@ type Book struct {
   Author    string
   Started   *time.Time
   Finished  *time.Time
+  Status    string
 }
 
 type BookModel struct {
@@ -36,13 +37,15 @@ func (m *BookModel) Insert(title, author string, started, finished sql.NullTime)
 }
 
 func (m *BookModel) Get(id int) (Book, error) {
-  stmt := "SELECT id, title, author, started, finished FROM books WHERE id = ?"
+  stmt := `SELECT id, title, author, started, finished,
+  CASE WHEN started IS NULL THEN "Not Started" WHEN finished IS NOT NULL THEN "Finished"
+  ELSE "Reading" END AS status FROM books WHERE id = ?`
 
   row := m.DB.QueryRow(stmt, id)
 
   var b Book
 
-  err := row.Scan(&b.ID, &b.Title, &b.Author, &b.Started, &b.Finished)
+  err := row.Scan(&b.ID, &b.Title, &b.Author, &b.Started, &b.Finished, &b.Status)
   if err != nil {
     if errors.Is(err, sql.ErrNoRows) {
       return Book{}, ErrNoRecord
@@ -53,8 +56,10 @@ func (m *BookModel) Get(id int) (Book, error) {
   return b, nil
 }
 
-func (m *BookModel) Latest() ([]Book, error) {
-  stmt := "SELECT id, title, author, started, finished FROM books ORDER BY id DESC LIMIT 10"
+func (m *BookModel) All() ([]Book, error) {
+  stmt := `SELECT id, title, author, started, finished,
+  CASE WHEN started IS NULL THEN "Not Started" WHEN finished IS NOT NULL THEN "Finished"
+  ELSE "Reading" END AS status FROM books ORDER BY id DESC`
 
   rows, err := m.DB.Query(stmt)
   if err != nil {
@@ -68,7 +73,7 @@ func (m *BookModel) Latest() ([]Book, error) {
   for rows.Next() {
     var b Book
 
-    err = rows.Scan(&b.ID, &b.Title, &b.Author, &b.Started, &b.Finished)
+    err = rows.Scan(&b.ID, &b.Title, &b.Author, &b.Started, &b.Finished, &b.Status)
     if err != nil {
       return nil, err
     }

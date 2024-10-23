@@ -1,6 +1,27 @@
 {{define "title"}}My Books{{end}}
 
 {{define "main"}}
-<section class="m-10">
+<section class="m-10 flex flex-col gap-4">
+  {{range .Books}}
+    <div class="bg-white rounded-lg w-full mx-6 px-6 py-2 flex flex-row justify-between items-center">
+      <div>
+        <h2 class="font-bold font-lg">{{.Title}}</h2>
+        <p>by {{.Author}}</p>
+      </div>
+      <div>
+        <p>Status:</p>
+        <p {{if eq .Status "Not Started"}}
+        class="bg-gray-300 rounded-xl px-4"
+        {{else if eq .Status "Finished"}}
+        class="bg-green-500 rounded-xl px-4"
+        {{else}}
+        class="bg-yellow-300 rounded-xl px-4"
+        {{end}}>{{.Status}}</p>
+      </div>
+      <a href="#">Edit</a>
+    </div>
+  {{else}}
+  <p>No books here yet. You can add books anytime you want.
+  {{end}}
 </section>
 {{end}}
