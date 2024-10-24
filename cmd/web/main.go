@@ -11,6 +11,7 @@ import (
   "github.com/jansuthacheeva/bookshelf/internal/models"
   _ "github.com/go-sql-driver/mysql"
   "github.com/joho/godotenv"
+  "github.com/go-playground/form/v4"
 )
 
 type application struct {
@@ -18,6 +19,7 @@ type application struct {
   logger          *slog.Logger
   templateCache   map[string]*template.Template
   users           *models.UserModel
+  formDecoder     *form.Decoder
 }
 
 func main () {
@@ -44,11 +46,14 @@ func main () {
     os.Exit(1)
   }
 
+  formDecoder := form.NewDecoder()
+
   app := &application{
     books: &models.BookModel{DB : db},
     logger: logger,
     templateCache: templateCache,
     users: &models.UserModel{DB: db},
+    formDecoder: formDecoder,
   }
 
   logger.Info("Starting server at localhost", slog.String("addr", *addr))
