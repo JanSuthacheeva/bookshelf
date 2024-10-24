@@ -13,8 +13,9 @@
     <aside class="col-span-1 flex flex-col justify-between items-center py-4">
         {{template "nav" .}}
     </aside>
-    <main class="col-span-5 bg-gray-100">
+    <main class="col-span-5 bg-gray-100 relative overflow-hidden">
       {{template "main" .}}
+        <img src="../static/img/witch-learning.svg" class="h-36 w-36 absolute bottom-[-2rem] left-[-1.5rem] rotate-12"/>
     </main>
     </div>
     <footer class="mx-auto text-black">Powered by <a href="https://golang.org">Golang</a></footer>
