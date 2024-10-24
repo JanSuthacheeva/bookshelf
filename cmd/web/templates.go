@@ -11,6 +11,7 @@ import (
 
 type templateData struct{
   Book	  models.Book
+  Books	  []models.Book
   Form	  any
 }
 

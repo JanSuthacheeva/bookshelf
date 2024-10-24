@@ -37,7 +37,15 @@ func (app *application) getDashboard(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *application) getBooks(w http.ResponseWriter, r *http.Request) {
-  w.Write([]byte("Here are the books."))
+  books, err := app.books.All()
+  if err != nil {
+    app.serverError(w, r, err)
+  }
+
+  data := app.newTemplateData(r)
+  data.Books = books
+
+  app.render(w, r, http.StatusOK, "books_index.tmpl.html", "base_auth", data)
 }
 
 func (app *application) getBooksCreate(w http.ResponseWriter, r *http.Request) {
