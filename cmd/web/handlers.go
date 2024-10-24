@@ -55,17 +55,12 @@ func (app *application) getBooksCreate(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *application) postBooksCreate(w http.ResponseWriter, r *http.Request) {
-  err := r.ParseForm()
+  var form bookCreateForm
+
+  err := app.decodePostForm(r, &form)
   if err != nil {
     app.clientError(w, http.StatusBadRequest)
     return
-  }
-
-  var form bookCreateForm
-
-  err = app.formDecoder.Decode(&form, r.PostForm)
-  if err != nil {
-    app.clientError(w, http.StatusBadRequest)
   }
 
   started, err := app.transformDateStringToSqlNullTime(form.Started)
