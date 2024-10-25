@@ -11,11 +11,11 @@ import (
 )
 
 type bookCreateForm struct {
-  Title		  string
-  Author	  string
-  Started	  string
-  Finished	  string
-  validator.Validator
+  Title		  string  `form:"title"`
+  Author	  string  `form:"author"`
+  Started	  string  `form:"started"`
+  Finished	  string  `form:"finished"`
+  validator.Validator	  `form:"-"`
 }
 
 
@@ -55,17 +55,12 @@ func (app *application) getBooksCreate(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *application) postBooksCreate(w http.ResponseWriter, r *http.Request) {
-  err := r.ParseForm()
+  var form bookCreateForm
+
+  err := app.decodePostForm(r, &form)
   if err != nil {
     app.clientError(w, http.StatusBadRequest)
     return
-  }
-
-  form := bookCreateForm{
-    Title:	  r.PostForm.Get("title"),
-    Author:   	  r.PostForm.Get("author"),
-    Started:  	  r.PostForm.Get("started"),
-    Finished: 	  r.PostForm.Get("finished"),
   }
 
   started, err := app.transformDateStringToSqlNullTime(form.Started)
