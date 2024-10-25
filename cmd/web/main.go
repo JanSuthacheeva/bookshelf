@@ -7,7 +7,10 @@ import (
   "log/slog"
   "net/http"
   "os"
+  "time"
 
+  "github.com/alexedwards/scs/v2"
+  "github.com/alexedwards/scs/mysqlstore"
   "github.com/jansuthacheeva/bookshelf/internal/models"
   _ "github.com/go-sql-driver/mysql"
   "github.com/joho/godotenv"
@@ -20,6 +23,7 @@ type application struct {
   templateCache   map[string]*template.Template
   users           *models.UserModel
   formDecoder     *form.Decoder
+  sessionManager  *scs.SessionManager
 }
 
 func main () {
