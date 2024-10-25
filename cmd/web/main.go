@@ -52,12 +52,17 @@ func main () {
 
   formDecoder := form.NewDecoder()
 
+  sessionManager := scs.New()
+  sessionManager.Store = mysqlstore.New(db)
+  sessionManager.Lifetime = 12 * time.Hour
+
   app := &application{
     books: &models.BookModel{DB : db},
     logger: logger,
     templateCache: templateCache,
     users: &models.UserModel{DB: db},
     formDecoder: formDecoder,
+    sessionManager: sessionManager,
   }
 
   logger.Info("Starting server at localhost", slog.String("addr", *addr))
