@@ -93,6 +93,9 @@ func (app *application) postBooksCreate(w http.ResponseWriter, r *http.Request) 
     app.serverError(w, r, err)
     return
   }
+
+  app.sessionManager.Put(r.Context(), "flash", "Book added successfully!")
+
   w.Header().Set("HX-Redirect", fmt.Sprintf("/books/%d", id));
   w.WriteHeader(http.StatusSeeOther)
 }
@@ -114,6 +117,7 @@ func (app *application) getBookView(w http.ResponseWriter, r *http.Request) {
     }
     return
   }
+
   data := app.newTemplateData(r)
   data.Book = book
 

@@ -7,7 +7,10 @@ import (
   "log/slog"
   "net/http"
   "os"
+  "time"
 
+  "github.com/alexedwards/scs/v2"
+  "github.com/alexedwards/scs/mysqlstore"
   "github.com/jansuthacheeva/bookshelf/internal/models"
   _ "github.com/go-sql-driver/mysql"
   "github.com/joho/godotenv"
@@ -20,6 +23,7 @@ type application struct {
   templateCache   map[string]*template.Template
   users           *models.UserModel
   formDecoder     *form.Decoder
+  sessionManager  *scs.SessionManager
 }
 
 func main () {
@@ -48,12 +52,17 @@ func main () {
 
   formDecoder := form.NewDecoder()
 
+  sessionManager := scs.New()
+  sessionManager.Store = mysqlstore.New(db)
+  sessionManager.Lifetime = 12 * time.Hour
+
   app := &application{
     books: &models.BookModel{DB : db},
     logger: logger,
     templateCache: templateCache,
     users: &models.UserModel{DB: db},
     formDecoder: formDecoder,
+    sessionManager: sessionManager,
   }
 
   logger.Info("Starting server at localhost", slog.String("addr", *addr))
