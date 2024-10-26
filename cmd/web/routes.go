@@ -12,15 +12,15 @@ func (app *application) routes() http.Handler {
   fileServer := http.FileServer(http.Dir("./ui/static"))
   mux.Handle("GET /static/", http.StripPrefix("/static", fileServer))
 
-  mux.HandleFunc("/", app.getHome)
+  dynamic := alice.New(app.sessionManager.LoadAndSave)
 
-  mux.HandleFunc("GET /login", app.getLogin)
-  mux.HandleFunc("GET /register", app.getRegister)
-
-  mux.HandleFunc("GET /books", app.getBooks)
-  mux.HandleFunc("POST /books/create", app.postBooksCreate)
-  mux.HandleFunc("GET /books/create", app.getBooksCreate)
-  mux.HandleFunc("GET /books/{id}", app.getBookView)
+  mux.Handle("/", dynamic.ThenFunc(app.getHome))
+  mux.Handle("GET /login", dynamic.ThenFunc(app.getLogin))
+  mux.Handle("GET /register", dynamic.ThenFunc(app.getRegister))
+  mux.Handle("GET /books", dynamic.ThenFunc(app.getBooks))
+  mux.Handle("POST /books/create", dynamic.ThenFunc(app.postBooksCreate))
+  mux.Handle("GET /books/create", dynamic.ThenFunc(app.getBooksCreate))
+  mux.Handle("GET /books/{id}", dynamic.ThenFunc(app.getBookView))
 
   standard := alice.New(app.recoverPanic, app.logRequest, commonHeaders)
 
