@@ -21,6 +21,11 @@ func (m *UserModel) Insert(name, email, hashedPassword string, created time.Time
   return 0, nil
 }
 
-func (m *UserModel) Get(id int) (User, error) {
-  return User{}, nil
+func (m *UserModel) Authenticate(email, password string) (int, error) {
+  return 0, nil
 }
+
+func (m *UserModel) Exists(id int) (bool, error) {
+  return false, nil
+}
+
