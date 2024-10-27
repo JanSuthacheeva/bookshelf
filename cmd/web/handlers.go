@@ -124,3 +124,15 @@ func (app *application) getBookView(w http.ResponseWriter, r *http.Request) {
   app.render(w, r, http.StatusOK, "books_view.tmpl.html", "base_auth", data)
 }
 
+func (app *application) postLogin(w http.ResponseWriter, r *http.Request) {
+
+}
+
+func (app *application) postLogout(w http.ResponseWriter, r *http.Request) {
+
+}
+
+func (app *application) postRegister(w http.ResponseWriter, r *http.Request) {
+
+}
+

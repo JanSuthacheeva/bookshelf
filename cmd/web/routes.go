@@ -15,8 +15,12 @@ func (app *application) routes() http.Handler {
   dynamic := alice.New(app.sessionManager.LoadAndSave)
 
   mux.Handle("/", dynamic.ThenFunc(app.getHome))
+  mux.Handle("/", dynamic.ThenFunc(app.getDashboard))
   mux.Handle("GET /login", dynamic.ThenFunc(app.getLogin))
+  mux.Handle("POST /login",  dynamic.ThenFunc(app.postLogin))
   mux.Handle("GET /register", dynamic.ThenFunc(app.getRegister))
+  mux.Handle("POST /register", dynamic.ThenFunc(app.postRegister))
+  mux.Handle("POST /logout", dynamic.ThenFunc(app.postLogout))
   mux.Handle("GET /books", dynamic.ThenFunc(app.getBooks))
   mux.Handle("POST /books/create", dynamic.ThenFunc(app.postBooksCreate))
   mux.Handle("GET /books/create", dynamic.ThenFunc(app.getBooksCreate))
