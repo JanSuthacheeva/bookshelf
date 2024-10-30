@@ -143,6 +143,31 @@ func (app *application) postLogout(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *application) postRegister(w http.ResponseWriter, r *http.Request) {
+  var form userRegisterForm
+
+  err := app.decodePostForm(r, &form)
+  if err != nil {
+    app.clientError(w, http.StatusBadRequest)
+    return
+  }
+
+  form.CheckField(validator.NotBlank(form.Name), "name", "This field cannot be blank.")
+  form.CheckField(validator.NotBlank(form.Email), "email", "This field cannot be blank.")
+  form.CheckField(validator.MatchesRegExp(form.Email, validator.EmailRX), "email", "This field must be a valid email address.")
+  form.CheckField(validator.NotBlank(form.Password), "password", "This field cannot be blank.")
+  form.CheckField(validator.MinChars(form.Password, 8), "password", "This field must be at least eight characters long.")
+  form.CheckField(validator.NotBlank(form.Password_confirm), "password_confirm", "This field cannot be blank.")
+  form.CheckField(validator.MinChars(form.Password_confirm, 8), "password_confirm", "This field must be at least eight characters long.")
+  form.CheckField(validator.Matches(form.Password, form.Password_confirm), "password_confirm", "The password fields must be identical.")
+
+  if !form.Valid() {
+    data := app.newTemplateData(r)
+    data.Form = form
+    app.render(w, r, http.StatusUnprocessableEntity, "register.tmpl.html", "userRegisterForm", data)
+    return
+  }
+
+  fmt.Println(w, "Create a new user...")
 
 }
 
