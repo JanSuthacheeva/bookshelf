@@ -18,13 +18,23 @@ type bookCreateForm struct {
   validator.Validator	  `form:"-"`
 }
 
+type userRegisterForm struct {
+  Name		      string  `form:"name"`
+  Email		      string  `form:"email"`
+  Password	      string  `form:"password"`
+  Password_confirm    string  `form:"password_confirm"`
+  validator.Validator	      `form:"-"`
+}
+
 
 func (app *application) getLogin(w http.ResponseWriter, r *http.Request) {
   app.render(w, r, http.StatusOK, "login.tmpl.html", "base_guest", templateData{})
 }
 
 func (app *application) getRegister(w http.ResponseWriter, r *http.Request) {
-  app.render(w, r, http.StatusOK, "register.tmpl.html", "base_guest", templateData{})
+  data := app.newTemplateData(r)
+  data.Form = userRegisterForm{}
+  app.render(w, r, http.StatusOK, "register.tmpl.html", "base_guest", data)
 }
 
 
