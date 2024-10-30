@@ -8,14 +8,20 @@
       <p class="text-lg mb-2">Registration</p>
       <p class="text-gray-500 text-xs">Fill in your details to use this application</p>
     </header>
-    <form>
+    <form id="registerForm">
       <div class="mb-4 flex flex-col gap-0.5">
         <label for="name" class="text-xs text-gray-500 uppercase">Name</label>
         <input type="text" class="py-0.5 px-2 rounded-md border border-grey-300 outline-orange-500" name="name" id="name">
+        {{ with .Form.FieldErrors.name }}
+          <label class="absolute bottom-[-1.2rem] right-0 text-xs text-red-500 ml-auto">{{.}}</label>
+        {{end}}
       </div>
       <div class="mb-4 flex flex-col gap-0.5">
         <label for="email" class="text-xs text-gray-500 uppercase">Email</label>
         <input type="email" class="py-0.5 px-2 rounded-md border border-grey-300 outline-orange-500" name="email" id="email">
+        {{ with .Form.FieldErrors.email }}
+          <label class="absolute bottom-[-1.2rem] right-0 text-xs text-red-500 ml-auto">{{.}}</label>
+        {{end}}
       </div>
       <div class="mb-4 flex flex-col gap-0.5 relative">
         <label for="password" class="text-xs text-gray-500 uppercase">Password</label>
@@ -31,6 +37,9 @@
           id="toggleEye">
           <img id="eyeImg" src="../../../static/img/pw-hide.svg">
         </button>
+        {{ with .Form.FieldErrors.password }}
+          <label class="absolute bottom-[-1.2rem] right-0 text-xs text-red-500 ml-auto">{{.}}</label>
+        {{end}}
       </div>
       <div class="mb-6 flex flex-col gap-0.5 relative">
         <label for="password_confirm" class="text-xs text-gray-500 uppercase">Confirm Password</label>
@@ -46,9 +55,15 @@
           id="confirmToggleEye">
           <img id="confirmEyeImg" src="../../../static/img/pw-hide.svg">
         </button>
+        {{ with .Form.FieldErrors.password_confirm }}
+          <label class="absolute bottom-[-1.2rem] right-0 text-xs text-red-500 ml-auto">{{.}}</label>
+        {{end}}
       </div>
       <div class="mb-4 flex flex-col gap-1">
-        <button type="submit" class="bg-orange-500 hover:bg-orange-linear py-1 text-center text-white text-sm rounded-md">Register</button>
+        <button hx-post="/register" hx-target="#registerForm" hx-swap="outerHTML"
+          class="bg-orange-500 hover:bg-orange-linear py-1 text-center text-white text-sm rounded-md">
+          Register
+        </button>
       </div>
       <p class="text-xs text-gray-500">Already a User? <a href="/login" class="underline">Login now</a>.</p>
     </form>
