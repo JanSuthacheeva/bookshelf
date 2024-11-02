@@ -1,0 +1,14 @@
+#!/bin/bash
+
+go_files=$(git diff --cached --name-only --diff-filter=ACM | grep '\.go$')
+
+if [ -z "$go_files" ]; then
+    exit 0
+fi
+
+for file in $go_files; do
+    go fmt "$file"
+    git add "$file"
+done
+
+echo "All Go files have been formatted."
