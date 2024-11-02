@@ -12,14 +12,14 @@
       <form id="registerForm">
         <div class="mb-4 flex flex-col gap-0.5 relative">
           <label for="name" class="text-xs text-gray-500 uppercase">Name</label>
-          <input type="text" class="py-0.5 px-2 rounded-md border border-grey-300 outline-orange-500" name="name" id="name">
+        <input type="text" class="py-0.5 px-2 rounded-md border border-grey-300 outline-orange-500" name="name" id="name" value="{{.Form.Name}}">
           {{ with .Form.FieldErrors.name }}
             <label class="absolute bottom-[-1.2rem] right-0 text-2xs text-red-500 ml-auto">{{.}}</label>
           {{end}}
         </div>
         <div class="mb-4 flex flex-col gap-0.5 relative">
           <label for="email" class="text-xs text-gray-500 uppercase">Email</label>
-          <input type="email" class="py-0.5 px-2 rounded-md border border-grey-300 outline-orange-500" name="email" id="email">
+        <input type="email" class="py-0.5 px-2 rounded-md border border-grey-300 outline-orange-500" name="email" id="email" value="{{.Form.Email}}">
           {{ with .Form.FieldErrors.email }}
             <label class="absolute bottom-[-1.2rem] right-0 text-2xs text-red-500 ml-auto">{{.}}</label>
           {{end}}
@@ -32,12 +32,7 @@
             name="password"
             id="password"
           >
-          <button
-            type="button"
-            class="h-4 w-4 text-grey-600 absolute right-[0.5rem] bottom-[0.4rem] z-10"
-            id="toggleEye">
-            <img id="eyeImg" src="../../../static/img/pw-hide.svg">
-          </button>
+          {{template "buttonEyeClosed" }}
           {{ with .Form.FieldErrors.password }}
             <label class="absolute bottom-[-1.2rem] right-0 text-2xs text-red-500 ml-auto">{{.}}</label>
           {{end}}
@@ -50,18 +45,13 @@
             name="password_confirm"
             id="password_confirm"
           >
-          <button
-            type="button"
-            class="h-4 w-4 text-grey-600 absolute right-[0.5rem] bottom-[0.4rem] z-10"
-            id="confirmToggleEye">
-            <img id="confirmEyeImg" src="../../../static/img/pw-hide.svg">
-          </button>
+          {{ template "buttonEyeClosed" }}
           {{ with .Form.FieldErrors.password_confirm }}
             <label class="absolute bottom-[-1.2rem] right-0 text-2xs text-red-500 ml-auto">{{.}}</label>
           {{end}}
         </div>
         <div class="mb-4 flex flex-col gap-1">
-          <button hx-post="/users/create" hx-target="#registerForm" hx-swap="outerHTML"
+          <button type="submit" hx-post="/users/create" hx-target="#registerForm" hx-swap="outerHTML"
             class="bg-orange-500 hover:bg-orange-linear py-1 text-center text-white text-sm rounded-md">
             Register
           </button>
@@ -70,7 +60,27 @@
       </form>
     {{end}}
   </section>
-  <!-- REWORK THIS WITH HTMX --> 
-  <script src="../../../static/js/register.js"></script>
 </div>
+{{end}}
+
+{{block "buttonEyeClosed" . }}
+  <button
+    hx-get="/buttons/eye-open"
+    hx-swap="outerHTML"
+    type="button"
+    class="h-4 w-4 text-grey-600 absolute right-[0.5rem] bottom-[0.4rem] z-10"
+  >
+    <img id="eyeImg" src="../../../static/img/pw-hide.svg">
+  </button>
+{{end}}
+
+{{block "buttonEyeOpen" . }}
+  <button
+    hx-get="/buttons/eye-closed"
+    hx-swap="outerHTML"
+    type="button"
+    class="h-4 w-4 text-grey-600 absolute right-[0.5rem] bottom-[0.4rem] z-10"
+  >
+    <img id="eyeImg" src="../../../static/img/pw-see.svg">
+  </button>
 {{end}}

@@ -167,7 +167,32 @@ func (app *application) postRegister(w http.ResponseWriter, r *http.Request) {
     return
   }
 
-  fmt.Println(w, "Create a new user...")
+  err = app.users.Insert(form.Name, form.Email, form.Password)
+  if err != nil {
+    if errors.Is(err, models.ErrDuplicateEmail) {
+      form.AddFieldError("email", "Email address is already in use.")
+      data := app.newTemplateData(r)
+      data.Form = form
+      app.render(w, r, http.StatusUnprocessableEntity, "register.tmpl.html", "userRegisterForm", data)
+      return
+    } else {
+      app.serverError(w, r, err)
+    }
+  }
 
+  app.sessionManager.Put(r.Context(), "flash", "Your registration was successful. Please log in.")
+
+  w.Header().Set("HX-Redirect", "/sessions/create")
+  w.WriteHeader(http.StatusSeeOther)
+}
+
+func (app *application) getButtonEyeOpen(w http.ResponseWriter, r *http.Request) {
+  data := app.newTemplateData(r)
+  app.render(w, r, http.StatusOK, "register.tmpl.html", "buttonEyeOpen", data)
+}
+
+func (app *application) getButtonEyeClosed(w http.ResponseWriter, r *http.Request) {
+  data := app.newTemplateData(r)
+  app.render(w, r, http.StatusOK, "register.tmpl.html", "buttonEyeClosed", data)
 }
 
