@@ -32,7 +32,13 @@
             name="password"
             id="password"
           >
-          {{template "buttonEyeClosed" }}
+          <button
+            type="button"
+            id="toggleEye"
+            class="h-4 w-4 text-grey-600 absolute right-[0.5rem] bottom-[0.4rem] z-10"
+          >
+            <img id="eyeImg" src="../../../static/img/pw-hide.svg">
+          </button>
           {{ with .Form.FieldErrors.password }}
             <label class="absolute bottom-[-1.2rem] right-0 text-2xs text-red-500 ml-auto">{{.}}</label>
           {{end}}
@@ -45,7 +51,13 @@
             name="password_confirm"
             id="password_confirm"
           >
-          {{ template "buttonEyeClosed" }}
+          <button
+            type="button"
+            id="toggleEye2"
+            class="h-4 w-4 text-grey-600 absolute right-[0.5rem] bottom-[0.4rem] z-10"
+          >
+            <img id="eyeImg2" src="../../../static/img/pw-hide.svg">
+          </button>
           {{ with .Form.FieldErrors.password_confirm }}
             <label class="absolute bottom-[-1.2rem] right-0 text-2xs text-red-500 ml-auto">{{.}}</label>
           {{end}}
@@ -61,26 +73,5 @@
     {{end}}
   </section>
 </div>
-{{end}}
-
-{{block "buttonEyeClosed" . }}
-  <button
-    hx-get="/buttons/eye-open"
-    hx-swap="outerHTML"
-    type="button"
-    class="h-4 w-4 text-grey-600 absolute right-[0.5rem] bottom-[0.4rem] z-10"
-  >
-    <img id="eyeImg" src="../../../static/img/pw-hide.svg">
-  </button>
-{{end}}
-
-{{block "buttonEyeOpen" . }}
-  <button
-    hx-get="/buttons/eye-closed"
-    hx-swap="outerHTML"
-    type="button"
-    class="h-4 w-4 text-grey-600 absolute right-[0.5rem] bottom-[0.4rem] z-10"
-  >
-    <img id="eyeImg" src="../../../static/img/pw-see.svg">
-  </button>
+<script src="../../../static/js/register.js"></script>
 {{end}}

@@ -26,9 +26,6 @@ func (app *application) routes() http.Handler {
   mux.Handle("GET /books/create", dynamic.ThenFunc(app.getBooksCreate))
   mux.Handle("GET /books/{id}", dynamic.ThenFunc(app.getBookView))
 
-  mux.Handle("GET /buttons/eye-open", dynamic.ThenFunc(app.getButtonEyeOpen))
-  mux.Handle("GET /buttons/eye-closed", dynamic.ThenFunc(app.getButtonEyeClosed))
-
   standard := alice.New(app.recoverPanic, app.logRequest, commonHeaders)
 
   return standard.Then(mux)

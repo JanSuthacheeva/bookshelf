@@ -185,14 +185,3 @@ func (app *application) postRegister(w http.ResponseWriter, r *http.Request) {
   w.Header().Set("HX-Redirect", "/sessions/create")
   w.WriteHeader(http.StatusSeeOther)
 }
-
-func (app *application) getButtonEyeOpen(w http.ResponseWriter, r *http.Request) {
-  data := app.newTemplateData(r)
-  app.render(w, r, http.StatusOK, "register.tmpl.html", "buttonEyeOpen", data)
-}
-
-func (app *application) getButtonEyeClosed(w http.ResponseWriter, r *http.Request) {
-  data := app.newTemplateData(r)
-  app.render(w, r, http.StatusOK, "register.tmpl.html", "buttonEyeClosed", data)
-}
-
