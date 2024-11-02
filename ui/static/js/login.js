@@ -10,5 +10,13 @@ function togglePWvisible() {
   }
 }
 
-const button = document.getElementById("toggleEye");
-button.addEventListener("click", togglePWvisible);
+function addListener() {
+    const button = document.getElementById("toggleEye");
+    if (button) {
+    button.addEventListener("click", togglePWvisible);
+    }
+}
+
+addListener();
+
+document.addEventListener('htmx:afterOnLoad', addListener);

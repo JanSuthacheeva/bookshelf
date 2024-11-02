@@ -8,18 +8,18 @@
       <p class="text-lg mb-2">Registration</p>
       <p class="text-gray-500 text-xs">Fill in your details to use this application</p>
     </header>
-    {{block "userRegisterForm" .}}
+    {{block "userCreateForm" .}}
       <form id="registerForm">
         <div class="mb-4 flex flex-col gap-0.5 relative">
           <label for="name" class="text-xs text-gray-500 uppercase">Name</label>
-        <input type="text" class="py-0.5 px-2 rounded-md border border-grey-300 outline-orange-500" name="name" id="name" value="{{.Form.Name}}">
+          <input type="text" class="py-0.5 px-2 rounded-md border border-grey-300 outline-orange-500" name="name" id="name" value="{{.Form.Name}}">
           {{ with .Form.FieldErrors.name }}
             <label class="absolute bottom-[-1.2rem] right-0 text-2xs text-red-500 ml-auto">{{.}}</label>
           {{end}}
         </div>
         <div class="mb-4 flex flex-col gap-0.5 relative">
           <label for="email" class="text-xs text-gray-500 uppercase">Email</label>
-        <input type="email" class="py-0.5 px-2 rounded-md border border-grey-300 outline-orange-500" name="email" id="email" value="{{.Form.Email}}">
+          <input type="email" class="py-0.5 px-2 rounded-md border border-grey-300 outline-orange-500" name="email" id="email" value="{{.Form.Email}}">
           {{ with .Form.FieldErrors.email }}
             <label class="absolute bottom-[-1.2rem] right-0 text-2xs text-red-500 ml-auto">{{.}}</label>
           {{end}}
@@ -68,7 +68,7 @@
             Register
           </button>
         </div>
-        <p class="text-xs text-gray-500">Already a User? <a href="/login" class="underline">Login now</a>.</p>
+        <p class="text-xs text-gray-500">Already a User? <a href="/sessions/create" class="underline">Login now</a>.</p>
       </form>
     {{end}}
   </section>

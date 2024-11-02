@@ -9,9 +9,15 @@
       <p class="text-gray-500 text-xs">Use your credentials to access your library.</p>
     </header>
     <form>
+    {{range .Form.NonFieldErrors}}
+        <div class='error'>{{.}}</div>
+    {{end}}
       <div class="mb-4 flex flex-col gap-0.5">
         <label for="email" class="text-xs text-gray-500 uppercase">Email</label>
         <input type="email" class="py-0.5 px-2 rounded-md border border-grey-300 outline-orange-500" name="email" id="email">
+        {{ with .Form.FieldErrors.email }}
+          <label class="absolute bottom-[-1.2rem] right-0 text-2xs text-red-500 ml-auto">{{.}}</label>
+        {{end}}
       </div>
       <div class="mb-4 flex flex-col gap-0.5 relative">
         <label for="password" class="text-xs text-gray-500 uppercase">Password</label>
@@ -27,6 +33,9 @@
           id="toggleEye">
           <img id="eyeImg" src="../../../static/img/pw-hide.svg">
         </button>
+        {{ with .Form.FieldErrors.password }}
+          <label class="absolute bottom-[-1.2rem] right-0 text-2xs text-red-500 ml-auto">{{.}}</label>
+        {{end}}
       </div>
       <div class="mb-4 flex justify-end">
         <p class="text-xs text-gray-500"><a href="#" class="underline">Forgot Password?</a></p>
@@ -38,7 +47,7 @@
         >Login
         </button>
       </div>
-      <p class="text-xs text-gray-500">New to this? <a href="/register" class="underline">Register now</a>.</p>
+      <p class="text-xs text-gray-500">New to this? <a href="/users/create" class="underline">Register now</a>.</p>
     </form>
   </section>
 </div>

@@ -18,7 +18,7 @@ type bookCreateForm struct {
   validator.Validator	  `form:"-"`
 }
 
-type userRegisterForm struct {
+type userCreateForm struct {
   Name		      string  `form:"name"`
   Email		      string  `form:"email"`
   Password	      string  `form:"password"`
@@ -26,14 +26,21 @@ type userRegisterForm struct {
   validator.Validator	      `form:"-"`
 }
 
+type sessionCreateForm struct {
+  Email		      string `form:"email"`
+  Password	      string `form:"password"`
+  validator.Validator	     `form:"-"`
+}
 
-func (app *application) getLogin(w http.ResponseWriter, r *http.Request) {
-  app.render(w, r, http.StatusOK, "login.tmpl.html", "base_guest", templateData{})
+func (app *application) getSessionCreate(w http.ResponseWriter, r *http.Request) {
+  data := app.newTemplateData(r)
+  data.Form = sessionCreateForm{}
+  app.render(w, r, http.StatusOK, "login.tmpl.html", "base_guest", data)
 }
 
 func (app *application) getRegister(w http.ResponseWriter, r *http.Request) {
   data := app.newTemplateData(r)
-  data.Form = userRegisterForm{}
+  data.Form = userCreateForm{}
   app.render(w, r, http.StatusOK, "register.tmpl.html", "base_guest", data)
 }
 
@@ -134,7 +141,7 @@ func (app *application) getBookView(w http.ResponseWriter, r *http.Request) {
   app.render(w, r, http.StatusOK, "books_view.tmpl.html", "base_auth", data)
 }
 
-func (app *application) postLogin(w http.ResponseWriter, r *http.Request) {
+func (app *application) postSessionCreate(w http.ResponseWriter, r *http.Request) {
 
 }
 
@@ -143,7 +150,7 @@ func (app *application) postLogout(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *application) postRegister(w http.ResponseWriter, r *http.Request) {
-  var form userRegisterForm
+  var form userCreateForm
 
   err := app.decodePostForm(r, &form)
   if err != nil {
@@ -163,7 +170,7 @@ func (app *application) postRegister(w http.ResponseWriter, r *http.Request) {
   if !form.Valid() {
     data := app.newTemplateData(r)
     data.Form = form
-    app.render(w, r, http.StatusUnprocessableEntity, "register.tmpl.html", "userRegisterForm", data)
+    app.render(w, r, http.StatusUnprocessableEntity, "register.tmpl.html", "userCreateForm", data)
     return
   }
 
@@ -173,7 +180,7 @@ func (app *application) postRegister(w http.ResponseWriter, r *http.Request) {
       form.AddFieldError("email", "Email address is already in use.")
       data := app.newTemplateData(r)
       data.Form = form
-      app.render(w, r, http.StatusUnprocessableEntity, "register.tmpl.html", "userRegisterForm", data)
+      app.render(w, r, http.StatusUnprocessableEntity, "register.tmpl.html", "userCreateForm", data)
       return
     } else {
       app.serverError(w, r, err)
