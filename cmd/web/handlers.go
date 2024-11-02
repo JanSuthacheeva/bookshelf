@@ -45,7 +45,9 @@ func (app *application) getRegister(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *application) getHome(w http.ResponseWriter, r *http.Request) {
-	app.render(w, r, http.StatusOK, "home.tmpl.html", "base_guest", templateData{})
+	data := app.newTemplateData(r)
+
+	app.render(w, r, http.StatusOK, "home.tmpl.html", "base_guest", data)
 }
 
 func (app *application) getDashboard(w http.ResponseWriter, r *http.Request) {
@@ -193,7 +195,9 @@ func (app *application) postSessionDelete(w http.ResponseWriter, r *http.Request
 	}
 	app.sessionManager.Remove(r.Context(), "authenticatedUserID")
 	app.sessionManager.Put(r.Context(), "flash", "You have been logged out successfully.")
-	http.Redirect(w, r, "/", http.StatusSeeOther)
+
+	w.Header().Set("HX-Redirect", "/")
+	w.WriteHeader(http.StatusSeeOther)
 }
 
 func (app *application) postRegister(w http.ResponseWriter, r *http.Request) {
