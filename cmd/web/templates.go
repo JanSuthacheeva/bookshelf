@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/jansuthacheeva/bookshelf/internal/models"
+	"github.com/justinas/nosurf"
 )
 
 type templateData struct {
@@ -14,6 +15,8 @@ type templateData struct {
 	Books []models.Book
 	Form  any
 	Flash string
+	IsAuthenticated bool
+	CSRFToken string
 }
 
 var functions = template.FuncMap{
@@ -23,6 +26,8 @@ var functions = template.FuncMap{
 func (app *application) newTemplateData(r *http.Request) templateData {
 	return templateData{
 		Flash: app.sessionManager.PopString(r.Context(), "flash"),
+		IsAuthenticated: app.isAuthenticated(r),
+		CSRFToken: nosurf.Token(r),
 	}
 }
 

@@ -10,6 +10,7 @@
     </header>
     {{block "userCreateForm" .}}
       <form id="registerForm">
+        <input type="hidden" name="csrf_token" value="{{.CSRFToken}}">
         <div class="mb-4 flex flex-col gap-0.5 relative">
           <label for="name" class="text-xs text-gray-500 uppercase">Name</label>
           <input type="text" class="py-0.5 px-2 rounded-md border border-grey-300 outline-orange-500" name="name" id="name" value="{{.Form.Name}}">

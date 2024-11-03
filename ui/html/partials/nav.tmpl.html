@@ -25,7 +25,10 @@
   </section>
   <ul class="mt-auto flex flex-col items-start gap-2 w-[5rem]">
     <li><a href="/" class="text-gray-icon hover:font-bold">Settings</a></li>
-    <li><a href="/" class="text-gray-icon hover:font-bold">Logout</a></li>
+    <form action="/sessions/delete" method="POST">
+      <input type="hidden" name="csrf_token" value="{{.CSRFToken}}">
+      <input type="submit" class="text-gray-icon hover:font-bold" value="Logout">
+    </form>
   </ul>
 </nav>
 {{end}}

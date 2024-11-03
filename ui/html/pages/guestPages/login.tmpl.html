@@ -10,6 +10,7 @@
     </header>
     {{block "sessionCreateForm" .}}
       <form id="sessionCreateForm" class="relative">
+      <input type="hidden" name="csrf_token" value="{{.CSRFToken}}">
       {{range .Form.NonFieldErrors}}
           <div class='text-2xs text-red-500 absolute top-[-1.5rem] mx-auto'>{{.}}</div>
       {{end}}
