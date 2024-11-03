@@ -196,8 +196,7 @@ func (app *application) postSessionDelete(w http.ResponseWriter, r *http.Request
 	app.sessionManager.Remove(r.Context(), "authenticatedUserID")
 	app.sessionManager.Put(r.Context(), "flash", "You have been logged out successfully.")
 
-	w.Header().Set("HX-Redirect", "/")
-	w.WriteHeader(http.StatusSeeOther)
+	http.Redirect(w, r, "/", http.StatusSeeOther)
 }
 
 func (app *application) postRegister(w http.ResponseWriter, r *http.Request) {
