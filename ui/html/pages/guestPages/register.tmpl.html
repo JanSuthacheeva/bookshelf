@@ -8,51 +8,71 @@
       <p class="text-lg mb-2">Registration</p>
       <p class="text-gray-500 text-xs">Fill in your details to use this application</p>
     </header>
-    <form>
-      <div class="mb-4 flex flex-col gap-0.5">
-        <label for="name" class="text-xs text-gray-500 uppercase">Name</label>
-        <input type="text" class="py-0.5 px-2 rounded-md border border-grey-300 outline-orange-500" name="name" id="name">
-      </div>
-      <div class="mb-4 flex flex-col gap-0.5">
-        <label for="email" class="text-xs text-gray-500 uppercase">Email</label>
-        <input type="email" class="py-0.5 px-2 rounded-md border border-grey-300 outline-orange-500" name="email" id="email">
-      </div>
-      <div class="mb-4 flex flex-col gap-0.5 relative">
-        <label for="password" class="text-xs text-gray-500 uppercase">Password</label>
-        <input
-          type="password"
-          class="py-0.5 px-2 rounded-md border border-grey-300 outline-orange-500"
-          name="password"
-          id="password"
-        >
-        <button
-          type="button"
-          class="h-4 w-4 text-grey-600 absolute right-[0.5rem] bottom-[0.4rem] z-10"
-          id="toggleEye">
-          <img id="eyeImg" src="../../../static/img/pw-hide.svg">
-        </button>
-      </div>
-      <div class="mb-6 flex flex-col gap-0.5 relative">
-        <label for="password_confirm" class="text-xs text-gray-500 uppercase">Confirm Password</label>
-        <input
-          type="password"
-          class="py-0.5 px-2 rounded-md border border-grey-300 outline-orange-500"
-          name="password_confirm"
-          id="password_confirm"
-        >
-        <button
-          type="button"
-          class="h-4 w-4 text-grey-600 absolute right-[0.5rem] bottom-[0.4rem] z-10"
-          id="confirmToggleEye">
-          <img id="confirmEyeImg" src="../../../static/img/pw-hide.svg">
-        </button>
-      </div>
-      <div class="mb-4 flex flex-col gap-1">
-        <button type="submit" class="bg-orange-500 hover:bg-orange-linear py-1 text-center text-white text-sm rounded-md">Register</button>
-      </div>
-      <p class="text-xs text-gray-500">Already a User? <a href="/login" class="underline">Login now</a>.</p>
-    </form>
+    {{block "userCreateForm" .}}
+      <form id="registerForm">
+        <input type="hidden" name="csrf_token" value="{{.CSRFToken}}">
+        <div class="mb-4 flex flex-col gap-0.5 relative">
+          <label for="name" class="text-xs text-gray-500 uppercase">Name</label>
+          <input type="text" class="py-0.5 px-2 rounded-md border border-grey-300 outline-orange-500" name="name" id="name" value="{{.Form.Name}}">
+          {{ with .Form.FieldErrors.name }}
+            <label class="absolute bottom-[-1.2rem] right-0 text-2xs text-red-500 ml-auto">{{.}}</label>
+          {{end}}
+        </div>
+        <div class="mb-4 flex flex-col gap-0.5 relative">
+          <label for="email" class="text-xs text-gray-500 uppercase">Email</label>
+          <input type="email" class="py-0.5 px-2 rounded-md border border-grey-300 outline-orange-500" name="email" id="email" value="{{.Form.Email}}">
+          {{ with .Form.FieldErrors.email }}
+            <label class="absolute bottom-[-1.2rem] right-0 text-2xs text-red-500 ml-auto">{{.}}</label>
+          {{end}}
+        </div>
+        <div class="mb-4 flex flex-col gap-0.5 relative">
+          <label for="password" class="text-xs text-gray-500 uppercase">Password</label>
+          <input
+            type="password"
+            class="py-0.5 px-2 rounded-md border border-grey-300 outline-orange-500"
+            name="password"
+            id="password"
+          >
+          <button
+            type="button"
+            id="toggleEye"
+            class="h-4 w-4 text-grey-600 absolute right-[0.5rem] bottom-[0.4rem] z-10"
+          >
+            <img id="eyeImg" src="../../../static/img/pw-hide.svg">
+          </button>
+          {{ with .Form.FieldErrors.password }}
+            <label class="absolute bottom-[-1.2rem] right-0 text-2xs text-red-500 ml-auto">{{.}}</label>
+          {{end}}
+        </div>
+        <div class="mb-6 flex flex-col gap-0.5 relative">
+          <label for="password_confirm" class="text-xs text-gray-500 uppercase">Confirm Password</label>
+          <input
+            type="password"
+            class="py-0.5 px-2 rounded-md border border-grey-300 outline-orange-500"
+            name="password_confirm"
+            id="password_confirm"
+          >
+          <button
+            type="button"
+            id="toggleEye2"
+            class="h-4 w-4 text-grey-600 absolute right-[0.5rem] bottom-[0.4rem] z-10"
+          >
+            <img id="eyeImg2" src="../../../static/img/pw-hide.svg">
+          </button>
+          {{ with .Form.FieldErrors.password_confirm }}
+            <label class="absolute bottom-[-1.2rem] right-0 text-2xs text-red-500 ml-auto">{{.}}</label>
+          {{end}}
+        </div>
+        <div class="mb-4 flex flex-col gap-1">
+          <button type="submit" hx-post="/users/create" hx-target="#registerForm" hx-swap="outerHTML"
+            class="bg-orange-500 hover:bg-orange-linear py-1 text-center text-white text-sm rounded-md">
+            Register
+          </button>
+        </div>
+        <p class="text-xs text-gray-500">Already a User? <a href="/sessions/create" class="underline">Login now</a>.</p>
+      </form>
+    {{end}}
   </section>
-  <script src="../../../static/js/register.js"></script>
 </div>
+<script src="../../../static/js/register.js"></script>
 {{end}}

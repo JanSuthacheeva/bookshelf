@@ -4,6 +4,7 @@
 <div id="main" class="flex flex-col justify-center items-center w-full h-full">
   {{block "bookCreateForm" .}}
     <form class="w-96 flex flex-col rounded-lg p-14" id="createForm">
+      <input type="hidden" name="csrf_token" value="{{.CSRFToken}}">
       <div class="flex gap-2 justify-start">
       <h1 class="font-bold text-xl mx-auto mb-6">Add a New Book</h1>
       </div>
@@ -11,28 +12,28 @@
         <label for="finished" class="text-xs text-gray-500 uppercase">Title</label>
         <input type="text" class="py-0.5 px-2 rounded-md border border-grey-300 outline-orange-500" name="title" id="title">
         {{ with .Form.FieldErrors.title }}
-          <label class="absolute bottom-[-1.2rem] right-0 text-xs text-red-500 ml-auto">{{.}}</label>
+          <label class="absolute bottom-[-1.2rem] right-0 text-2xs text-red-500 ml-auto">{{.}}</label>
         {{end}}
       </div>
       <div class="mb-4 flex flex-col gap-0.5 relative">
         <label for="finished" class="text-xs text-gray-500 uppercase">Author</label>
         <input type="text" class="py-0.5 px-2 rounded-md border border-grey-300 outline-orange-500" name="author" id="author">
         {{ with .Form.FieldErrors.author }}
-          <label class="absolute bottom-[-1.2rem] right-0 text-xs text-red-500 ml-auto">{{.}}</label>
+          <label class="absolute bottom-[-1.2rem] right-0 text-2xs text-red-500 ml-auto">{{.}}</label>
         {{end}}
       </div>
       <div class="mb-4 flex flex-col gap-0.5 relative">
         <label for="started" class="text-xs text-gray-500 uppercase">Started*</label>
         <input type="date" class="py-0.5 px-2 rounded-md border border-grey-300 outline-orange-500" name="started" id="started">
         {{ with .Form.FieldErrors.started }}
-          <label class="absolute bottom-[-1.2rem] right-0 text-xs text-red-500 ml-auto">{{.}}</label>
+          <label class="absolute bottom-[-1.2rem] right-0 text-2xs text-red-500 ml-auto">{{.}}</label>
         {{end}}
       </div>
       <div class="mb-4 flex flex-col gap-0.5 relative">
         <label for="finished" class="text-xs text-gray-500 uppercase">Finished*</label>
         <input type="date" class="py-0.5 px-2 rounded-md border border-grey-300 outline-orange-500" name="finished" id="finished">
         {{ with .Form.FieldErrors.finished }}
-          <label class="absolute bottom-[-1.2rem] right-0 text-xs text-red-500 ml-auto">{{.}}</label>
+          <label class="absolute bottom-[-1.2rem] right-0 text-2xs text-red-500 ml-auto">{{.}}</label>
         {{end}}
       </div>
       <span class="text-xs mb-2">Fields marked with * are optional</span>

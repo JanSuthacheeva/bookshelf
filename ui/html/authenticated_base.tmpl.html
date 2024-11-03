@@ -17,7 +17,7 @@
       {{template "main" .}}
       <img src="../static/img/witch-learning.svg" class="h-36 w-36 absolute bottom-[-2rem] left-[-1.5rem] rotate-12"/>
       {{ with .Flash }}
-        <div class="bg-orange-linear text-white rounded-xl p-4 absolute top-[2rem] right-[2rem]">Book added successfully!</div>
+        <div class="bg-orange-linear text-white rounded-xl p-4 absolute top-[2rem] right-[2rem]">{{.}}</div>
       {{end}}
     </main>
     </div>
