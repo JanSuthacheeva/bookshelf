@@ -10,7 +10,6 @@ import (
 	"github.com/jansuthacheeva/bookshelf/internal/assert"
 )
 
-
 func TestCommonHeaders(t *testing.T) {
 	rr := httptest.NewRecorder()
 
