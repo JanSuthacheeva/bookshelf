@@ -34,6 +34,9 @@ func (app *application) newTemplateData(r *http.Request) templateData {
 }
 
 func humanDate(t time.Time) string {
+	if t.IsZero() {
+		return ""
+	}
 	return t.Format("02. January 2006")
 }
 
