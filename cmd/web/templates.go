@@ -2,11 +2,13 @@ package main
 
 import (
 	"html/template"
+	"io/fs"
 	"net/http"
 	"path/filepath"
 	"time"
 
 	"github.com/jansuthacheeva/bookshelf/internal/models"
+	"github.com/jansuthacheeva/bookshelf/ui"
 	"github.com/justinas/nosurf"
 )
 
@@ -39,11 +41,11 @@ func newTemplateCache() (map[string]*template.Template, error) {
 
 	cache := map[string]*template.Template{}
 
-	guestPages, err := filepath.Glob("./ui/html/pages/guestPages/*.tmpl.html")
+	guestPages, err := fs.Glob(ui.Files, "html/pages/guestPages/*.tmpl.html")
 	if err != nil {
 		return nil, err
 	}
-	authPages, err := filepath.Glob("./ui/html/pages/authPages/*.tmpl.html")
+	authPages, err := fs.Glob(ui.Files, "html/pages/authPages/*.tmpl.html")
 	if err != nil {
 		return nil, err
 	}
@@ -64,16 +66,16 @@ func loopOverPages(cache map[string]*template.Template, pages []string, template
 
 	var baseTemplate = []string{}
 	if templateType == "auth" {
-		baseTemplate = append([]string{"./ui/html/authenticated_base.tmpl.html"}, "./ui/html/partials/nav.tmpl.html")
+		baseTemplate = append([]string{"html/authenticated_base.tmpl.html"}, "html/partials/nav.tmpl.html")
 	} else {
-		baseTemplate = append(baseTemplate, "./ui/html/guest_base.tmpl.html")
+		baseTemplate = append(baseTemplate, "html/guest_base.tmpl.html")
 	}
 	for _, page := range pages {
 		name := filepath.Base(page)
 
 		files := append(baseTemplate, page)
 
-		ts, err := template.New(name).Funcs(functions).ParseFiles(files...)
+		ts, err := template.New(name).Funcs(functions).ParseFS(ui.Files, files...)
 		if err != nil {
 			return nil, err
 		}
