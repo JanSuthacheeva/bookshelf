@@ -19,10 +19,10 @@ import (
 )
 
 type application struct {
-	books          *models.BookModel
+	books          models.BookModelInterface
 	logger         *slog.Logger
 	templateCache  map[string]*template.Template
-	users          *models.UserModel
+	users          models.UserModelInterface
 	formDecoder    *form.Decoder
 	sessionManager *scs.SessionManager
 }

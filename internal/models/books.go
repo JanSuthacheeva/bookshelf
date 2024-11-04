@@ -6,6 +6,12 @@ import (
 	"time"
 )
 
+type BookModelInterface interface {
+	Insert(title, author string, startet, finished sql.NullTime) (int, error)
+	Get(id int) (Book, error)
+	All() ([]Book, error)
+}
+
 type Book struct {
 	ID       int
 	Title    string
